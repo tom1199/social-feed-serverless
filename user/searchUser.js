@@ -9,29 +9,9 @@ exports.handler = (event, context, callback) => {
     //     errorResponse('Authorization not configured', context.awsRequestId, callback);
     //     return;
     // }
-   // const requestBody = JSON.parse(event.body);
+    const requestBody = JSON.parse(event.body);
 
-    //var users = searchUser(requestBody);
-
-    console.log("Received searchUsers");
-    const users = [
-        {
-            "userId": 1,
-            "name": "Win",
-            "email": "win@gmail.com",
-            "follow": true,
-            "image_url": "www.google.com"
-        },
-        {
-            "userId": 2,
-            "name": "Treza",
-            "email": "treza@gmail.com",
-            "follow": true,
-            "image_url": "www.google.com"
-        }
-    ];
-    
-    
+    var users = searchUser(requestBody);
 
     const response = {
         statusCode: 200,
