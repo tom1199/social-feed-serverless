@@ -13,9 +13,18 @@ exports.handler = function(event, context, callback) {
         },
     ];
     
-    const response = {
-        status: 200,
+    const body = {
+        message: "success",
         feeds: myFeeds
+    };
+    
+    const response = {
+        statusCode: 200,
+        body: body,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
     }; 
     
     callback(null, response);
