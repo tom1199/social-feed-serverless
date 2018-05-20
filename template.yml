@@ -33,3 +33,33 @@ Resources:
           Properties:
             Path: /
             Method: get
+  
+  # FeedService
+  CreateFeed:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: feed/createFeed.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /feeds
+            Method: post
+  GetMyFeeds:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: feed/getMyFeeds.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /feeds
+            Method: get
