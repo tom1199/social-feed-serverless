@@ -9,7 +9,7 @@ exports.handler = (event, context, callback) => {
     //     errorResponse('Authorization not configured', context.awsRequestId, callback);
     //     return;
     // }
-    const requestBody = JSON.parse(evnet.body);
+    const requestBody = JSON.parse(event.body);
 
     var users = searchUser(requestBody);
 
