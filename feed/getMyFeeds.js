@@ -20,11 +20,12 @@ exports.handler = function(event, context, callback) {
     
     const response = {
         statusCode: 200,
-        body: body,
+        body: JSON.stringify(body),
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
-        }
+        },
+        isBase64Encoded: false
     }; 
     
     callback(null, response);
