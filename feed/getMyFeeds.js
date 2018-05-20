@@ -36,14 +36,14 @@ exports.handler = function(event, context, callback) {
     
     const params = {
         TableName: process.env.FEED_TABLE,
-        KeyConditionExpression: "ownerId = :input",
+        FilterExpression: "ownerId = :id",
         ExpressionAttributeValues: {
-            ":input": ownerId
+            ":id": ownerId
         }
     };
 
     // fetch all feeds created by given user id from the database
-    dynamodb.query(params, (error, result) => {
+    dynamodb.scan(params, (error, result) => {
         // handle potential errors
         if (error) {
             console.error(error);
