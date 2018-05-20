@@ -34,7 +34,7 @@ Resources:
             Path: /
             Method: get
   
-  # FeedService
+  # FeedService Functions
   CreateFeed:
     Type: AWS::Serverless::Function
     Properties:
@@ -43,6 +43,9 @@ Resources:
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          FEED_TABLE: !Ref FeedTable
       Events:
         GetEvent:
           Type: Api
@@ -57,9 +60,24 @@ Resources:
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          FEED_TABLE: !Ref FeedTable
       Events:
         GetEvent:
           Type: Api
           Properties:
             Path: /feeds
             Method: get
+            
+  # DynamoDB Feed Table
+  FeedTable:
+    FeedTable:                   
+     Type: AWS::Serverless::SimpleTable
+     Properties:
+       PrimaryKey:
+         Name: id
+         Type: String
+       ProvisionedThroughput:
+         ReadCapacityUnits: 5
+         WriteCapacityUnits: 5

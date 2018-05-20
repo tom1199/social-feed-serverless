@@ -1,6 +1,11 @@
 {
     "CreateFeed": {
-        "lambda": {}
+        "lambda": {
+            "body": {
+                "title": "my new feed",
+                "imageURL": "www"
+            }
+        }
     },
     "GetMyFeeds": {
         "lambda": {}
