@@ -33,7 +33,7 @@ exports.handler = (event, context, callback) => {
 
     const response = {
         statusCode: 200,
-        body: users,
+        body: JSON.stringify(users),
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
