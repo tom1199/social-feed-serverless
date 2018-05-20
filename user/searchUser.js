@@ -42,7 +42,7 @@ exports.handler = (event, context, callback) => {
     }
    
     callback(null, response);
-}
+};
 
 function searchUser(requestBody) {
     const users = [
