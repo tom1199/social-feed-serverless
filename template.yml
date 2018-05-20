@@ -72,12 +72,16 @@ Resources:
             
   # DynamoDB Feed Table
   FeedTable:
-    FeedTable:                   
-     Type: AWS::Serverless::SimpleTable
-     Properties:
-       PrimaryKey:
-         Name: id
-         Type: String
-       ProvisionedThroughput:
-         ReadCapacityUnits: 5
-         WriteCapacityUnits: 5
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
