@@ -7,6 +7,9 @@ function isValidateFeed(feed) {
     if (feed.imageUrl === undefined) {
         return false;
     }
+    if (feed.ownerId === undefined) {
+        return false;
+    }
     return true;
 }
 
@@ -18,7 +21,7 @@ exports.handler = function(event, context, callback) {
     if (isValidateFeed(data) === false) {
         console.error('invalid data');
         const body = {
-            error: "invalid data",
+            error: "Bad Request",
             message: "invalid feed input" 
         };
             
@@ -42,13 +45,14 @@ exports.handler = function(event, context, callback) {
             id: uuid.v1(),
             title: data.title,
             imageUrl: data.imageUrl,
+            ownerId: data.ownerId,
             createdAt: timestamp,
             updatedAt: timestamp,
         },
     };
 
     // write the todo to the database
-    dynamodb.put(params, (error, data) => {
+    dynamodb.put(params, (error) => {
         
         // handle potential errors
         if (error) {
@@ -65,7 +69,7 @@ exports.handler = function(event, context, callback) {
                     'Content-Type': 'application/json', 
                     'Access-Control-Allow-Origin': '*'
                 },
-                body: JSON.stringify(body),
+                body: JSON.stringify(params),
                 isBase64Encoded: false
             }
             

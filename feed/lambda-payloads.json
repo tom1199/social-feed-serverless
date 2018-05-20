@@ -1,13 +1,18 @@
 {
     "CreateFeed": {
-        "lambda": {
-            "body": {
-                "title": "my new feed",
-                "imageURL": "www"
-            }
-        }
+        "lambda": {}
     },
     "GetMyFeeds": {
-        "lambda": {}
+        "lambda": {},
+        "apigateway": {
+            "path": "/feeds",
+            "method": {
+                "value": "GET",
+                "items": [
+                    "GET"
+                ]
+            },
+            "queryString": "ownerId=1232323"
+        }
     }
 }

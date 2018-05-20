@@ -74,6 +74,7 @@ Resources:
   FeedTable:
     Type: AWS::DynamoDB::Table
     Properties:
+      TableName: feeds
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
