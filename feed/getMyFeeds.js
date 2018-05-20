@@ -69,7 +69,7 @@ exports.handler = function(event, context, callback) {
         
         const body = {
             message: "success",
-            feeds: result
+            feeds: result.Item
         };
     
         const response = {
