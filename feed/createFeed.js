@@ -39,16 +39,18 @@ exports.handler = function(event, context, callback) {
         return;
     }
     
+    const newFeed = {
+        id: uuid.v1(),
+        title: data.title,
+        imageUrl: data.imageUrl,
+        ownerId: data.ownerId,
+        createdAt: timestamp,
+        updatedAt: timestamp,
+    };
+    
     const params = {
         TableName: process.env.FEED_TABLE,
-        Item: {
-            id: uuid.v1(),
-            title: data.title,
-            imageUrl: data.imageUrl,
-            ownerId: data.ownerId,
-            createdAt: timestamp,
-            updatedAt: timestamp,
-        },
+        Item: newFeed,
     };
 
     // write the todo to the database
@@ -80,7 +82,7 @@ exports.handler = function(event, context, callback) {
         
         const body = {
             message: "success",
-            feed: data
+            feed: newFeed
         };
     
         const response = {

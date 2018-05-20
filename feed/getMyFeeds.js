@@ -58,7 +58,7 @@ exports.handler = function(event, context, callback) {
                     'Content-Type': 'application/json', 
                     'Access-Control-Allow-Origin': '*'
                 },
-                body: JSON.stringify(params),
+                body: JSON.stringify(body),
                 isBase64Encoded: false
             }
             
