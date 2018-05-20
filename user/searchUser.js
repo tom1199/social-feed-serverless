@@ -41,7 +41,7 @@ function searchUser(requestBody) {
             "email": "treza@gmail.com",
             "follow": true,
             "image_url": "www.google.com"
-        },
+        }
     ];
     return users;
 }
