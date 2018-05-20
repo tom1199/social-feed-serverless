@@ -76,10 +76,10 @@ Resources:
     Properties:
       TableName: feeds
       AttributeDefinitions:
-        - AttributeName: id
+        - AttributeName: ownerId
           AttributeType: S
       KeySchema:
-        - AttributeName: id
+        - AttributeName: ownerId
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 5
