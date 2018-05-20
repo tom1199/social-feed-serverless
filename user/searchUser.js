@@ -41,7 +41,7 @@ exports.handler = (event, context, callback) => {
             'Access-Control-Allow-Origin': '*'
         },
         isBase64Encoded: false
-    }
+    };
    
     callback(null, response);
 };
