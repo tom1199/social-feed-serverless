@@ -5,13 +5,15 @@ const AWS = require('aws-sdk');
 const ddb = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = (event, context, callback) => {
-    if (!event.requestContext.authorizer) {
-        errorResponse('Authorization not configured', context.awsRequestId, callback);
-        return;
-    }
+    // if (!event.requestContext.authorizer) {
+    //     errorResponse('Authorization not configured', context.awsRequestId, callback);
+    //     return;
+    // }
    // const requestBody = JSON.parse(event.body);
 
     //var users = searchUser(requestBody);
+
+    console.log("Received searchUsers");
     const users = [
         {
             "userId": 1,
