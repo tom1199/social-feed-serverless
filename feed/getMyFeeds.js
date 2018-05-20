@@ -36,10 +36,7 @@ exports.handler = function(event, context, callback) {
     
     const params = {
         TableName: process.env.FEED_TABLE,
-        KeyConditionExpression: "#id = :input",
-        ExpressionAttributeNames:{
-            "#id": "ownerId"
-        },
+        KeyConditionExpression: "ownerId = :input",
         ExpressionAttributeValues: {
             ":input": ownerId
         }

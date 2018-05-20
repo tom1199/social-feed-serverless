@@ -75,9 +75,13 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
         - AttributeName: ownerId
           AttributeType: S
       KeySchema:
+        - AttributeName: id
+          KeyType: HASH
         - AttributeName: ownerId
           KeyType: HASH
       ProvisionedThroughput:
