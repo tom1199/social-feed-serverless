@@ -1,0 +1,8 @@
+{
+    "CreateFeed": {
+        "lambda": {}
+    },
+    "GetMyFeeds": {
+        "lambda": {}
+    }
+}
