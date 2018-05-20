@@ -74,14 +74,11 @@ Resources:
   SearchUsers:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: user/searchUsser.handler
+      Handler: user/searchUser.handler
       Runtime: nodejs6.10
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Environment:
-        Variables:
-          FEED_TABLE: !Ref FeedTable
       Events:
         GetEvent:
           Type: Api
