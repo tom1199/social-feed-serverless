@@ -34,7 +34,7 @@ Resources:
             Path: /
             Method: get
   
-  # FeedService
+  # FeedService Functions
   CreateFeed:
     Type: AWS::Serverless::Function
     Properties:
@@ -43,6 +43,9 @@ Resources:
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          FEED_TABLE: !Ref FeedTable
       Events:
         GetEvent:
           Type: Api
@@ -57,25 +60,51 @@ Resources:
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          FEED_TABLE: !Ref FeedTable
       Events:
         GetEvent:
           Type: Api
           Properties:
             Path: /feeds
             Method: get
-  # UserService
+
+  #UserService
   SearchUsers:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: user/searchUser.handler
+      Handler: user/searchUsser.handler
       Runtime: nodejs6.10
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          FEED_TABLE: !Ref FeedTable
       Events:
         GetEvent:
           Type: Api
           Properties:
             Path: /users
             Method: get
-  
+            
+  # DynamoDB Feed Table
+  FeedTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: ownerId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: ownerId
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
