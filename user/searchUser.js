@@ -26,19 +26,25 @@ exports.handler = (event, context, callback) => {
     callback(null, response);
 };
 
+
+
 function searchUser(requestBody) {
-    var userId = requestBody.userId;
-    var userName = requestBody.userName;
-    var email = requestBody.email;
+    var userId = requestBody.userId ? undefined : "";
+    var userName = requestBody.userName ? undefined : "";
+    var email = requestBody.email ? undefined : "";
+
+    // const params = {
+    //     TableName: process.env.UserTable,
+    //     FilterExpression: "userId = :id or userName CONTAINS :name or email CONTAINS :email",
+    //     ExpressionAttributeValues: {
+    //         ":id": userId,
+    //         ":userName": userName,
+    //         ":email": email
+    //     }
+    // };
 
     const params = {
-        TableName: process.env.UserTable,
-        FilterExpression: "userId = :id or userName CONTAINS :name or email CONTAINS :email",
-        ExpressionAttributeValues: {
-            ":id": userId,
-            ":userName": userName,
-            ":email": email
-        }
+        TableName: process.env.UserTable
     };
 
     dynamodb.scan(params, (error, result) => {
