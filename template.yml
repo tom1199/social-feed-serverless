@@ -45,7 +45,8 @@ Resources:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Environment:
         Variables:
-          FEED_TABLE: !Ref FeedTable
+          FEED_TABLE: !Ref FeedTable,
+          USER_TABLE: !Ref UserTable
       Events:
         GetEvent:
           Type: Api
@@ -110,7 +111,7 @@ Resources:
   UserTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      AttributeDefinitions:
+      Attribute Definitions:
         - AttributeName: userId
           AttributeType: S
         - AttributeName: userName
