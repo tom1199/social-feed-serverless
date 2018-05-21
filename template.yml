@@ -114,21 +114,22 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       Attribute Definitions:
-        - AttributeName: "userId"
-          AttributeType: "S"
-        - AttributeName: "userName"
-          AttributeType: "S"
-        - AttributeName: "imageUrl"
-          AttributeType: "S"
-        - AttributeName: "follower"
-          AttributeType: "S"
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: userName
+          AttributeType: S
+        - AttributeName: imageUrl
+          AttributeType: S
+        - AttributeName: follower
+          AttributeType: S
       KeySchema:
-        - AttributeName: "userId"
-          KeyType: "HASH"
-        - AttributeName: "userName"
-          KeyType: "RANGE"
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: userName
+          KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-      StreamSpecification:
-        StreamViewType: "NEW_IMAGE"
+      TableName: "UserTable"
+      # StreamSpecification:
+      #   StreamViewType: NEW_IMAGE
