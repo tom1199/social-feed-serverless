@@ -32,7 +32,7 @@ function searchUser(requestBody) {
     var email = requestBody.email;
 
     const params = {
-        TableName: process.env.USER_TABLE,
+        TableName: process.env.UserTable,
         FilterExpression: "userId = :id or userName CONTAINS :name or email CONTAINS :email",
         ExpressionAttributeValues: {
             ":id": userId,
