@@ -14,9 +14,16 @@ exports.handler = (event, context, callback) => {
 
     var users = searchUser(requestBody);
 
+    
+    const body = {
+        message: "success",
+        users: users
+    };
+    
+
     const response = {
         statusCode: 200,
-        body: JSON.stringify(users),
+        body: JSON.stringify(body),
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
