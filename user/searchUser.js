@@ -45,7 +45,7 @@ function searchUser(requestBody) {
     // };
 
     const params = {
-        TableName: process.env.UserTable
+        TableName: process.env.USER_TABLE
     };
 
     dynamodb.scan(params, (error, result) => {
