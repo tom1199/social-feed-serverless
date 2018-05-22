@@ -79,9 +79,9 @@ Resources:
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      # Environment:
-      #   Variables:
-      #     USER_TABLE: !Ref UserTable
+      Environment:
+        Variables:
+          USER_TABLE: !Ref UserTable
       Events:
         GetEvent:
           Type: Api
@@ -110,26 +110,22 @@ Resources:
         StreamViewType: NEW_IMAGE
 
   # DynamoDB User Table
-  # UserTable:
-  #   Type: AWS::DynamoDB::Table
-  #   Properties:
-  #     Attribute Definitions:
-  #       - AttributeName: userId
-  #         AttributeType: S
-  #       - AttributeName: userName
-  #         AttributeType: S
-  #       - AttributeName: imageUrl
-  #         AttributeType: S
-  #       - AttributeName: follower
-  #         AttributeType: S
-  #     KeySchema:
-  #       - AttributeName: userId
-  #         KeyType: HASH
-  #       - AttributeName: userName
-  #         KeyType: RANGE
-  #     ProvisionedThroughput:
-  #       ReadCapacityUnits: 5
-  #       WriteCapacityUnits: 5
-  #     TableName: "UserTable"
-      # StreamSpecification:
-      #   StreamViewType: NEW_IMAGE
+  UserTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      Attribute Definitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: userName
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: userName
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: "UserTable"
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
