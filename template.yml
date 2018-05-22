@@ -113,7 +113,7 @@ Resources:
   UserTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      Attribute Definitions:
+      AttributeDefinitions:
         - AttributeName: userId
           AttributeType: S
         - AttributeName: userName
@@ -126,6 +126,5 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-      TableName: "UserTable"
       StreamSpecification:
         StreamViewType: NEW_IMAGE
