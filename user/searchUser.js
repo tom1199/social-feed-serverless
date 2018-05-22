@@ -2,7 +2,7 @@ const randomBytes = require('crypto').randomBytes;
 
 const AWS = require('aws-sdk');
 
-//const dynamodb = require("../dynamodb");
+const dynamodb = require("../dynamodb");
 //const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = (event, context, callback) => {
@@ -30,9 +30,9 @@ exports.handler = (event, context, callback) => {
 
 
 function searchUser(requestBody) {
-    var userId = requestBody.userId ? undefined : "";
-    var userName = requestBody.userName ? undefined : "";
-    var email = requestBody.email ? undefined : "";
+    // var userId = requestBody.userId ? undefined : "";
+    // var userName = requestBody.userName ? undefined : "";
+    // var email = requestBody.email ? undefined : "";
 
     // const params = {
     //     TableName: process.env.UserTable,
