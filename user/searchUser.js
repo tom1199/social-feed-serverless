@@ -53,7 +53,7 @@ function searchUser(requestBody) {
             console.error(error);
             
             const body = {
-                error: "Internal Server Error",
+                error: "Internal Server Error" + error,
                 message: "Couldn\'t get feeds." 
             };
             
