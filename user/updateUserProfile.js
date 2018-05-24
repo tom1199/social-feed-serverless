@@ -43,7 +43,7 @@ exports.handler = (event, context, callback) => {
         UpdateExpression: "set imageUrl = :imageUrl, userNameSearch = :userNameSearch",
         ExpressionAttributeValues: {
             ":imageUrl": data.imageUrl,
-            ":userNameSearch": data.userNameSearch,
+            ":userNameSearch": data.userNameSearch
         },
         ReturnValues:"UPDATED_NEW"
     };
