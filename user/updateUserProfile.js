@@ -38,17 +38,16 @@ exports.handler = (event, context, callback) => {
     const params = {
         TableName: process.env.USER_TABLE,
         Key: {
-            userId: {
+            "userId": {
                 S: data.userId
-            },
-            userName: {
-                S: data.userName
             }
         },
         UpdateExpression: "set imageUrl = :imageUrl, userNameSearch = :userNameSearch",
+        ConditionExpression: "userId = :userId",
         ExpressionAttributeValues: {
             ":imageUrl": data.imageUrl,
             ":userNameSearch": data.userNameSearch,
+            ":userId": data.userId,
         }
     };
 
@@ -59,7 +58,7 @@ exports.handler = (event, context, callback) => {
             console.error(error);
             
             const body = {
-                error: "Unable to update user." + error,
+                error: "Unable to update user." + error + params + event.body,
                 message: "Couldn\'t update user." 
             };
             
@@ -69,7 +68,7 @@ exports.handler = (event, context, callback) => {
                     'Content-Type': 'application/json', 
                     'Access-Control-Allow-Origin': '*'
                 },
-                body: JSON.stringify(body) + params,
+                body: JSON.stringify(body),
                 isBase64Encoded: false
             }
             
