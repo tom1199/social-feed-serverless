@@ -37,6 +37,9 @@ exports.handler = (event, context, callback) => {
 
     const params = {
         TableName: process.env.USER_TABLE,
+        Key: {
+            "userId": userId
+        },
         UpdateExpression: "set imageUrl = :imageUrl, userNameSearch = :userNameSearch",
         ConditionExpression: "userId = :userId",
         ExpressionAttributeValues: {
@@ -63,7 +66,7 @@ exports.handler = (event, context, callback) => {
                     'Content-Type': 'application/json', 
                     'Access-Control-Allow-Origin': '*'
                 },
-                body: JSON.stringify(body),
+                body: JSON.stringify(body) + params,
                 isBase64Encoded: false
             }
             
