@@ -1,6 +1,7 @@
 'use strict';
 
-const dynamodb = require("../dynamodb");
+// const dynamodb = require("../dynamodb");
+
 const uuid = require("uuid");
 
 function isValidUser(user) {
@@ -38,11 +39,11 @@ exports.handler = (event, context, callback) => {
     const params = {
         TableName: process.env.USER_TABLE,
         Key: {
-            userId: data.userId
+            "userId": event.body.userId
         },
         UpdateExpression: "set imageUrl = :imageUrl",
         ExpressionAttributeValues: {
-            ":imageUrl": data.imageUrl
+            ":imageUrl": event.body.imageUrl
         },
         ReturnValues:"UPDATED_NEW"
     };
@@ -54,7 +55,7 @@ exports.handler = (event, context, callback) => {
             console.error(error);
             
             const body = {
-                error: "Unable to update user." + error + params + event.body,
+                error: "Unable to update user." + error + params.Key.userId + data,
                 message: "Couldn\'t update user." 
             };
             
