@@ -122,6 +122,24 @@ Resources:
           Properties:
             Path: /users
             Method: get
+  CreateUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: user/createUser.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          USER_TABLE: !Ref UserTable
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: POST
+            
   # DynamoDB Feed Table
   FeedTable:
     Type: AWS::DynamoDB::Table

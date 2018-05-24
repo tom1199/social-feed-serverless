@@ -23,10 +23,6 @@ exports.handler = (event, context, callback) => {
         searchFilter = "1=1"
     }
 
-    if (requestBody.searchFilter !== undefined) {
-        searchFilter = requestBody.searchFilter;
-    }
-
     var params = "";
     
     if (searchFilter !== "") {
