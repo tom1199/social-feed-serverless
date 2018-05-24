@@ -11,6 +11,8 @@ function isValidateRequest(event) {
 
 exports.handler = function(event, context, callback) {
     
+    //console.log("Environment Variables = ", JSON.stringify(process.env));
+    
     if (isValidateRequest(event) === false) {
         console.error('invalid data');
         const body = {
