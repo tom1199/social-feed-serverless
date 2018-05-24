@@ -11,12 +11,20 @@ exports.handler = (event, context, callback) => {
     //     return;
     // }
     const requestBody = JSON.parse(event.body || "{}");
-
-    // var users = searchUser(requestBody);
+    
+    var filterExpression = "";
+    var searchFilter = "";
+    if (requestBody.searchFilter !== undefined) {
+        searchFilter = requestBody.searchFilter;
+        filterExpression = "userId = :searchFilter or userName CONTAINS :searchFilter or email CONTAINS :searchFilter"
+    }
 
     
     const params = {
-        TableName: process.env.USER_TABLE
+        TableName: process.env.USER_TABLE,
+        FilterExpression: filterExpression,
+        ExpressionAttributeValues: filterExpression
+
     };
 
     dynamodb.scan(params, (error, result) => {
