@@ -33,15 +33,6 @@ exports.handler = (event, context, callback) => {
         return;
     }
 
-    const newUser = {
-        id: uuid.v1(),
-        userName: data.title,
-        imageUrl: data.imageUrl,
-        email: data.email,
-        createdAt: timestamp,
-        updatedAt: timestamp,
-    };
-
     const params = {
         TableName: process.env.USER_TABLE,
         Key: {
@@ -53,7 +44,7 @@ exports.handler = (event, context, callback) => {
         }
     };
 
-     dynamodb.update(params, (error) => {
+    dynamodb.update(params, (error) => {
         
         // handle potential errors
         if (error) {

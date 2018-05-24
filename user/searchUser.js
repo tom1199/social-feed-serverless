@@ -17,7 +17,8 @@ exports.handler = (event, context, callback) => {
     if (event.queryStringParameters.searchFilter !== undefined &&
         event.queryStringParameters.searchFilter !== "") {
         searchFilter = event.queryStringParameters.searchFilter;
-        filterExpression = "contains(userId, :searchFilter) or contains(userName, :searchFilter) or contains(email, :searchFilter)";
+        //filterExpression = "contains(userId, :searchFilter) or contains(userName, :searchFilter) or contains(email, :searchFilter)";
+        filterExpression = "contains(userName, :searchFilter)";
     }
 
     var params = "";
