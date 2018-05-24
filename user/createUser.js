@@ -55,7 +55,7 @@ exports.handler = (event, context, callback) => {
             console.error(error);
             
             const body = {
-                error: "Couldn\'t create new user.",
+                error: "Couldn\'t create new user." + error,
                 message: "Couldn\'t create new user." 
             };
             
@@ -65,7 +65,7 @@ exports.handler = (event, context, callback) => {
                     'Content-Type': 'application/json', 
                     'Access-Control-Allow-Origin': '*'
                 },
-                body: JSON.stringify(params),
+                body: JSON.stringify(body),
                 isBase64Encoded: false
             }
             
