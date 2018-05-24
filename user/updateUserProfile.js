@@ -33,6 +33,8 @@ exports.handler = (event, context, callback) => {
         return;
     }
 
+    var userId = data.userId;
+
     const params = {
         TableName: process.env.USER_TABLE,
         Key: {
