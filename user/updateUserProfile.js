@@ -38,16 +38,17 @@ exports.handler = (event, context, callback) => {
     const params = {
         TableName: process.env.USER_TABLE,
         Key: {
-            "userId": {
-                S: userId
+            userId: {
+                S: data.userId
+            },
+            userName: {
+                S: data.userName
             }
         },
         UpdateExpression: "set imageUrl = :imageUrl, userNameSearch = :userNameSearch",
-        ConditionExpression: "userId = :userId",
         ExpressionAttributeValues: {
             ":imageUrl": data.imageUrl,
             ":userNameSearch": data.userNameSearch,
-            ":userId": userId
         }
     };
 
