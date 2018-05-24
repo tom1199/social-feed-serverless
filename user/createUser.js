@@ -34,7 +34,7 @@ exports.handler = (event, context, callback) => {
     }
 
     const newUser = {
-        id: uuid.v1(),
+        userId: uuid.v1(),
         userName: data.userName,
         userNameSearch: data.userName.toLowerCase(),
         imageUrl: 'default.jpg',
