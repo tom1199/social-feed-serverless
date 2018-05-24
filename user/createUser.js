@@ -45,10 +45,10 @@ exports.handler = (event, context, callback) => {
 
     const params = {
         TableName: process.env.USER_TABLE,
-        Item: newUser,
+        Item: newUser
     };
 
-     dynamodb.put(params, (error) => {
+    dynamodb.put(params, (error) => {
         
         // handle potential errors
         if (error) {
