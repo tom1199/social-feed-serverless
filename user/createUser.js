@@ -37,7 +37,7 @@ exports.handler = (event, context, callback) => {
         id: uuid.v1(),
         userName: data.title,
         imageUrl: data.imageUrl,
-        email: data.ownerId,
+        email: data.email,
         createdAt: timestamp,
         updatedAt: timestamp,
     };
