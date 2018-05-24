@@ -155,7 +155,7 @@ Resources:
           Type: Api
           Properties:
             Path: /users
-            Method: POST
+            Method: PUT
             
   # DynamoDB Feed Table
   FeedTable:

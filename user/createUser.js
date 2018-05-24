@@ -35,7 +35,8 @@ exports.handler = (event, context, callback) => {
 
     const newUser = {
         id: uuid.v1(),
-        userName: data.title,
+        userName: data.userName,
+        userNameSearch: data.userName.toLowerCase(),
         imageUrl: '',
         email: data.email,
         createdAt: timestamp,
