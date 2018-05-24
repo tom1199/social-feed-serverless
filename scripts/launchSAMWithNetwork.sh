@@ -1,1 +1,1 @@
-FEED_TABLE=Local-FeedTable /home/ec2-user/.c9/bin/sam local start-api —skip-pull-image --docker-network lambda-local —template template.yml
+LIKE_TABLE=Local-LikeTable FEED_TABLE=Local-FeedTable /home/ec2-user/.c9/bin/sam local start-api —skip-pull-image --docker-network lambda-local —template template.yml

@@ -69,7 +69,41 @@ Resources:
           Properties:
             Path: /feeds
             Method: get
-
+  LikeFeed:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: feed/likeFeed.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          LIKE_TABLE: !Ref LikeTable
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /feeds/{feedId}/like
+            Method: post
+  UnlikeFeed:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: feed/unlikeFeed.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          LIKE_TABLE: !Ref LikeTable
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /feeds/{feedId}/unlike
+            Method: post
+            
   #UserService
   SearchUsers:
     Type: AWS::Serverless::Function
