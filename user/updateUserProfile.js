@@ -38,9 +38,7 @@ exports.handler = (event, context, callback) => {
     const params = {
         TableName: process.env.USER_TABLE,
         Key: {
-            "userId": {
-                S: data.userId
-            }
+            "userId": data.userId,
         },
         UpdateExpression: "set imageUrl = :imageUrl, userNameSearch = :userNameSearch",
         ConditionExpression: "userId = :userId",
@@ -48,7 +46,8 @@ exports.handler = (event, context, callback) => {
             ":imageUrl": data.imageUrl,
             ":userNameSearch": data.userNameSearch,
             ":userId": data.userId,
-        }
+        },
+        ReturnValues:"UPDATED_NEW"
     };
 
     dynamodb.update(params, (error) => {
