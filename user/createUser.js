@@ -47,7 +47,6 @@ exports.handler = (event, context, callback) => {
         Item: newUser,
     };
 
-     // write the todo to the database
      dynamodb.put(params, (error) => {
         
         // handle potential errors

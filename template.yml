@@ -122,7 +122,6 @@ Resources:
           Properties:
             Path: /users
             Method: get
-            
   # DynamoDB Feed Table
   FeedTable:
     Type: AWS::DynamoDB::Table
