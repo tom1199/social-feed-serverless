@@ -18,10 +18,9 @@ exports.handler = (event, context, callback) => {
     if (event.queryStringParameters.searchFilter !== undefined) {
         searchFilter = event.queryStringParameters.searchFilter;
         filterExpression = "userId = :searchFilter or userName CONTAINS :searchFilter or email CONTAINS :searchFilter"
-        filterExpression = "contains(userId, :searchFilter) or contains(userName, :searchFilter) or contains(email, :searchFilter)"
-        
+        expressionAttribValues = "contains(userId, :searchFilter) or contains(userName, :searchFilter) or contains(email, :searchFilter)"
     }
-    
+
     var params = "";
     
     if (searchFilter !== "") {
@@ -29,14 +28,14 @@ exports.handler = (event, context, callback) => {
             TableName: process.env.USER_TABLE,
             FilterExpression: filterExpression,
             ExpressionAttributeValues: {
-                ":searchFilter": searchFilter
+                ":searchFilter": expressionAttribValues
             }
     
         };
     } else {
         params = {
             TableName: process.env.USER_TABLE
-        }
+        };
     }
   
     dynamodb.scan(params, (error, result) => {
