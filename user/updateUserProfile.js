@@ -44,18 +44,24 @@ exports.handler = (event, context, callback) => {
 
     const params = {
         TableName: process.env.USER_TABLE,
-        Item: newUser,
+        Key: {
+            "userId": userId,
+        },
+        UpdateExpression: "set imageUrl = :imageUrl",
+        ExpressionAttributeValues: {
+            ":imageUrl": data.imageUrl
+        }
     };
 
-     dynamodb.put(params, (error) => {
+     dynamodb.update(params, (error) => {
         
         // handle potential errors
         if (error) {
             console.error(error);
             
             const body = {
-                error: "Couldn\'t create new user.",
-                message: "Couldn\'t create new user." 
+                error: "Unable to update user." + error,
+                message: "Couldn\'t update user." 
             };
             
             const response = {
@@ -74,12 +80,11 @@ exports.handler = (event, context, callback) => {
         }
         
         const body = {
-            message: "success",
-            feed: newUser
+            message: "Successfully Updated",
         };
     
         const response = {
-            statusCode: 201,
+            statusCode: 200,
             body: JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json',

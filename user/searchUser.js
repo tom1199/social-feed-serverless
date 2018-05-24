@@ -13,12 +13,11 @@ exports.handler = (event, context, callback) => {
     
     var filterExpression = "";
     var searchFilter = "";
-    var expressionAttribValues = "";
-
-    if (event.queryStringParameters.searchFilter !== undefined) {
+  
+    if (event.queryStringParameters.searchFilter !== undefined &&
+        event.queryStringParameters.searchFilter !== "") {
         searchFilter = event.queryStringParameters.searchFilter;
-        filterExpression = "userId = :searchFilter or userName CONTAINS :searchFilter or email CONTAINS :searchFilter"
-        expressionAttribValues = "contains(userId, :searchFilter) or contains(userName, :searchFilter) or contains(email, :searchFilter)"
+        filterExpression = "contains(userId, :searchFilter) or contains(userName, :searchFilter) or contains(email, :searchFilter)";
     }
 
     var params = "";
@@ -28,7 +27,7 @@ exports.handler = (event, context, callback) => {
             TableName: process.env.USER_TABLE,
             FilterExpression: filterExpression,
             ExpressionAttributeValues: {
-                ":searchFilter": expressionAttribValues
+                ":searchFilter": searchFilter
             }
     
         };
