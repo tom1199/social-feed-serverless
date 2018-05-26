@@ -175,7 +175,50 @@ Resources:
           Properties:
             Path: /users
             Method: PUT
-            
+
+#Util Services            
+  CreateEmailSubscriber:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: utils/createEmailSubscriber.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  
+  SendEmail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: utils/sendEmail.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+
+  SendSMS:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: utils/sendSMS.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+
+  # CreateThumbnail:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: utils/createThumbnail.handler
+  #     Runtime: nodejs6.10
+  #     Role:
+  #       Fn::ImportValue:
+  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  #     Events:
+  #       GetEvent:
+  #         Type: Api
+  #         Properties:
+  #           Path: /utils
+  #           Method: POST
+
   # DynamoDB Feed Table
   FeedTable:
     Type: AWS::DynamoDB::Table
