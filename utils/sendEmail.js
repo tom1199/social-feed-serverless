@@ -7,7 +7,7 @@ exports.handler = (event, context, callback) => {
     var params = {
       Message: event.content,
       Subject: event.subject,
-      TopicArn: 'arn:aws:sns:ap-southeast-1:560522575826:notifyPicturePost'
+      TopicArn: 'arn:aws:sns:ap-southeast-1:560522575826:notifyPicture'
     };
     SNS.publish(params, function(err, data) {
       if (err) console.log(err, err.stack); // an error occurred
