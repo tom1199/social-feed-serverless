@@ -225,7 +225,7 @@ Resources:
               S3Key:
                 Rules:
                   - Name: prefix
-                    Value: '/uploads'   
+                    Value: '/public/feeds'   
 
   # DynamoDB Feed Table
   FeedTable:
