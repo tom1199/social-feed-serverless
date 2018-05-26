@@ -34,28 +34,28 @@ exports.handler = (event, context, callback) => {
     }
 
     const newUser = {
-        id: uuid.v1(),
-        userName: data.title,
-        imageUrl: data.imageUrl,
-        email: data.ownerId,
+        userId: uuid.v1(),
+        userName: data.userName,
+        userNameSearch: data.userName.toLowerCase(),
+        imageUrl: 'default.jpg',
+        email: data.email,
         createdAt: timestamp,
         updatedAt: timestamp,
     };
 
     const params = {
         TableName: process.env.USER_TABLE,
-        Item: newUser,
+        Item: newUser
     };
 
-     // write the todo to the database
-     dynamodb.put(params, (error) => {
+    dynamodb.put(params, (error) => {
         
         // handle potential errors
         if (error) {
             console.error(error);
             
             const body = {
-                error: "Couldn\'t create new user.",
+                error: "Couldn\'t create new user." + error,
                 message: "Couldn\'t create new user." 
             };
             
@@ -65,7 +65,7 @@ exports.handler = (event, context, callback) => {
                     'Content-Type': 'application/json', 
                     'Access-Control-Allow-Origin': '*'
                 },
-                body: JSON.stringify(params),
+                body: JSON.stringify(body),
                 isBase64Encoded: false
             }
             

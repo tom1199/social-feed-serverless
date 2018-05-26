@@ -141,6 +141,40 @@ Resources:
           Properties:
             Path: /users
             Method: get
+  CreateUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: user/createUser.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          USER_TABLE: !Ref UserTable
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: POST
+  UpdateUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: user/updateUserProfile.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          USER_TABLE: !Ref UserTable
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: PUT
             
   # DynamoDB Feed Table
   FeedTable:
