@@ -204,20 +204,21 @@ Resources:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
 
-  # CreateThumbnail:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Handler: utils/createThumbnail.handler
-  #     Runtime: nodejs6.10
-  #     Role:
-  #       Fn::ImportValue:
-  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-  #     Events:
-  #       GetEvent:
-  #         Type: Api
-  #         Properties:
-  #           Path: /utils
-  #           Method: POST
+  CreateThumbnail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: utils/createThumbnail.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        - S3:
+            Bucket: S3BucketPhotos
+            Event: S3:ObjectCreated:*
+            Rules:
+              - prefix: uploads/
+              # - suffix: .jpg
 
   # DynamoDB Feed Table
   FeedTable:
@@ -296,6 +297,24 @@ Resources:
         WriteCapacityUnits: 5
       StreamSpecification:
         StreamViewType: NEW_IMAGE
+  
+  S3BucketPhotos:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: social-app-image-upload
+        # add additional custom bucket configuration here
+  # ResizeLambdaPermissionPhotosS3:
+  #     Type: AWS::Lambda::Permission
+  #     Properties:
+  #       FunctionName:
+  #         "Fn::GetAtt":
+  #           - CreateThumbnail
+  #           - Arn
+  #       Principal: "s3.amazonaws.com"
+  #       Action: "lambda:InvokeFunction"
+  #       SourceAccount:
+  #         Ref: AWS::AccountId
+  #       SourceArn: "arn:aws:s3:::social-app-image-upload"
         
   # # Task Queue
   # TaskQueue
