@@ -310,7 +310,7 @@ Resources:
 
   SNSNotiTopic:
       Type: "AWS::SNS::Topic"
-      TopicName: notifyPicture
+      TopicName: "notifyPicture"
 
         # add additional custom bucket configuration here
   # ResizeLambdaPermissionPhotosS3:
