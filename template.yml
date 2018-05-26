@@ -219,8 +219,8 @@ Resources:
           Properties:
             Bucket: !Ref S3BucketPhotos
             Events: s3:ObjectCreated:*
-            Rules:
-            - prefix: uploads/
+            # Rules:
+            # - prefix: uploads/
             # - suffix: .jpg
           
 
