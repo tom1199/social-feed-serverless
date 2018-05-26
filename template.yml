@@ -309,6 +309,12 @@ Resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: social-app-image-upload
+
+  SNSNotiTopic:
+      Type: "AWS::SNS::Topic"
+      Properties:
+        TopicName: "notifyPicture"
+
         # add additional custom bucket configuration here
   # ResizeLambdaPermissionPhotosS3:
   #     Type: AWS::Lambda::Permission

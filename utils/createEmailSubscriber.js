@@ -7,7 +7,7 @@ exports.handler = (event, context, callback) => {
     console.log('Received event:', event);
 var params = {
   Protocol: 'email',
-  TopicArn: 'arn:aws:sns:ap-southeast-1:251803505525:email-notify',
+  TopicArn: 'arn:aws:sns:ap-southeast-1:560522575826:notifyPicture',
   Endpoint: event.email
 };
 SNS.subscribe(params, function(err, data) {
