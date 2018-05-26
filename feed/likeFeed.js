@@ -80,6 +80,58 @@ exports.handler = function(event, context, callback) {
         });
     });
     
+    const aggregateFeedCount = new Promise((resolve, reject) => {
+        
+        var params = {
+            TableName: process.env.FEED_TABLE,
+            // ProjectionExpression: "#yr, title, info.rating",
+            FilterExpression: "id = :id",
+            ExpressionAttributeValues: {
+                ":id": feedId
+            }
+        };
+        
+        dynamodb.scan(params, (error, result) => {
+            // handle potential errors
+            if (error) {
+                console.error(error);
+                reject(error);
+                return;
+            }
+            
+            if (result.Items.count == 0) {
+                console.error("feed not exist");
+                reject("feed not exist");
+            }
+            
+            var feed = result[0];
+            var params = {
+                TableName: process.env.FEED_TABLE,
+                Key:{
+                    "ownerId": feed.ownerId,
+                    "createdAt": feed.createdAt
+                },
+                UpdateExpression: "SET likeCount = likeCount + :p",
+                ExpressionAttributeValues:{
+                    ":p":1
+                },
+                ReturnValues:"UPDATED_NEW"
+            };
+            
+            console.log("Attempting a like count update...");
+            dynamodb.update(params, function(error, data) {
+                 // handle potential errors
+                if (error) {
+                    console.error(error);
+                    reject(data);
+                    return;
+                }
+                resolve(data);
+            });
+        });
+        
+    });
+    
     Promise.all([updateUserLikeFeedTable, updateFeedLikedByUserTable])
     .then((res) => {
         callback(null, resTemplate.successResponse(200));
