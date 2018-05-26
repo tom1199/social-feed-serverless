@@ -212,13 +212,17 @@ Resources:
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Timeout: 60
       Events:
-        - S3:
-            Bucket: S3BucketPhotos
-            Event: S3:ObjectCreated:*
+        CreateThumbnailEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref S3BucketPhotos
+            Events: s3:ObjectCreated:*
             Rules:
-              - prefix: uploads/
-              # - suffix: .jpg
+            - prefix: uploads/
+            # - suffix: .jpg
+          
 
   # DynamoDB Feed Table
   FeedTable:
