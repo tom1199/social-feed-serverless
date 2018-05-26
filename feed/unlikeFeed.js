@@ -1,8 +1,8 @@
 'use strict';
 
 const dynamodb = require("../dynamodb");
-const uuid = require("uuid");
 const resTemplate = require("../response");
+const Promise = require("promise");
 
 function isValidateRequest(event) {
     //console.log("event = ", event);
@@ -30,60 +30,53 @@ exports.handler = function(event, context, callback) {
     const feedId = event.pathParameters.feedId;
     const body = JSON.parse(event.body || "{}")
     const likedBy = body.likedBy;
-    const timestamp = new Date().getTime();
 
-    // Check if like exist
-    const query = {
-        TableName: process.env.LIKE_TABLE,
-        FilterExpression: "feedId = :feedId and likedBy = :likedBy",
-        ExpressionAttributeValues: {
-            ":feedId": feedId,
-            ":likedBy": likedBy
-        }
-    }
-    dynamodb.scan(query, (error, data) => {
-       // handle potential errors
-        if (error) {
-            console.error(error);
-            callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error.", "Error when query like info."));
-            return;
-        }
-        
-        // like not found
-        if (data.Items.length == 0) {
-            console.log("Like not exist!");
-            callback(null, resTemplate.successResponse(200));
-            return;
-        }
-        
-        
-        const items = data.Items.map((like) => {
-            return {
-                DeleteRequest : {
-                    Key : {
-                        'id' : like.id,
-                        'feedId': feedId
-                    }
-                }
-            };
-        });
-        
-        // Delete all reco
-        const requestItems = {};
-        requestItems[process.env.LIKE_TABLE] = items;
-        const params = {
-            RequestItems : requestItems
+    const updateUserLikeFeedTable = new Promise((resolve, reject) => {
+        var params = {
+            TableName: process.env.USER_LIKE_FEED_TABLE,
+            Key:{
+                "userId": likedBy,
+                "feedId": feedId
+            }
         };
 
-        // write to the database
-        dynamodb.batchWrite(params, (error) => {
-            // handle potential errors
+        console.log("Attempting a conditional delete...");
+        dynamodb.delete(params, function(error, data) {
             if (error) {
                 console.error(error);
-                callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t create new like."));
+                reject(error);
                 return;
             }
-            callback(null, resTemplate.successResponse(200));
+            resolve(data);
         });
     });
+    
+    const updateFeedLikedByUserTable = new Promise((resolve, reject) => {
+        var params = {
+            TableName: process.env.FEED_LIKED_BY_USER_TABLE,
+            Key:{
+                "userId": likedBy,
+                "feedId": feedId
+            }
+        };
+
+        console.log("Attempting a conditional delete...");
+        dynamodb.delete(params, function(error, data) {
+            if (error) {
+                console.error(error);
+                reject(error);
+                return;
+            }
+            resolve(data);
+        });
+    });
+    
+    Promise.all([updateUserLikeFeedTable, updateFeedLikedByUserTable])
+    .then((res) => {
+        callback(null, resTemplate.successResponse(200));
+    })
+    .catch((error) => {
+        console.error(error);
+        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t create new like."));
+    })
 };

@@ -67,7 +67,24 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-            Path: /feeds
+            Path: /feeds/my
+            Method: get
+  GetFollowingFeeds:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: feed/getFollowingFeeds.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          FEED_TABLE: !Ref FeedTable
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /feeds/following
             Method: get
   LikeFeed:
     Type: AWS::Serverless::Function
@@ -79,7 +96,8 @@ Resources:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Environment:
         Variables:
-          LIKE_TABLE: !Ref LikeTable
+          USER_LIKE_FEED_TABLE: !Ref UserLikeFeedTable
+          FEED_LIKED_BY_USER_TABLE: !Ref FeedLikedByUserTable
       Events:
         GetEvent:
           Type: Api
@@ -96,7 +114,8 @@ Resources:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Environment:
         Variables:
-          LIKE_TABLE: !Ref LikeTable
+          USER_LIKE_FEED_TABLE: !Ref UserLikeFeedTable
+          FEED_LIKED_BY_USER_TABLE: !Ref FeedLikedByUserTable
       Events:
         GetEvent:
           Type: Api
@@ -128,14 +147,14 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: id
-          AttributeType: S
         - AttributeName: ownerId
           AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: N
       KeySchema:
-        - AttributeName: id
-          KeyType: HASH
         - AttributeName: ownerId
+          KeyType: HASH
+        - AttributeName: createdAt
           KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 5
@@ -163,17 +182,17 @@ Resources:
       StreamSpecification:
         StreamViewType: NEW_IMAGE
   
-  # DynamoDB User Table
-  LikeTable:
+  # DynamoDB Like Table
+  UserLikeFeedTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: id
+        - AttributeName: userId
           AttributeType: S
         - AttributeName: feedId
           AttributeType: S
       KeySchema:
-        - AttributeName: id
+        - AttributeName: userId
           KeyType: HASH
         - AttributeName: feedId
           KeyType: RANGE
@@ -182,3 +201,34 @@ Resources:
         WriteCapacityUnits: 5
       StreamSpecification:
         StreamViewType: NEW_IMAGE
+  FeedLikedByUserTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: feedId
+          AttributeType: S
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: feedId
+          KeyType: HASH
+        - AttributeName: userId
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+        
+  # # Task Queue
+  # TaskQueue
+  #   Type: AWS::SQS::Queue
+  #   Properties:
+  #     VisibilityTimeout: 60
+  #     RedrivePolicy:
+  #       deadLetterTargetArn: !Sub ${DeadLetterQueue.Arn}
+  #       maxReceiveCount: 10
+  
+  # # Dead Letter Queue
+  # DeadLetterQueue
+  #   Type: AWS::SQS:Queue

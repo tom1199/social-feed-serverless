@@ -2,6 +2,7 @@
 
 const dynamodb = require("../dynamodb");
 const uuid = require("uuid");
+const resTemplate = require("../response");
 
 function isValidateFeed(feed) {
     if (feed.imageUrl === undefined) {
@@ -20,30 +21,16 @@ exports.handler = function(event, context, callback) {
     
     if (isValidateFeed(data) === false) {
         console.error('invalid data');
-        const body = {
-            error: "Bad Request",
-            message: "invalid feed input" 
-        };
-            
-        const response = {
-            statusCode: 400,
-            headers: { 
-                'Content-Type': 'application/json', 
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify(body),
-            isBase64Encoded: false
-        }
-            
-        callback(null, response);
+        callback(null, resTemplate.errorResponse(400, "Bad Request", "invalid feed input"));
         return;
     }
     
     const newFeed = {
-        id: uuid.v1(),
         title: data.title,
         imageUrl: data.imageUrl,
         ownerId: data.ownerId,
+        likeCount: 0,
+        id: uuid.v1(),
         createdAt: timestamp,
         updatedAt: timestamp,
     };
@@ -55,48 +42,13 @@ exports.handler = function(event, context, callback) {
 
     // write the todo to the database
     dynamodb.put(params, (error) => {
-        
         // handle potential errors
         if (error) {
             console.error(error);
-            
-            const body = {
-                error: "Couldn\'t create new feed.",
-                message: "Couldn\'t create new feed." 
-            };
-            
-            const response = {
-                statusCode: error.statusCode || 501,
-                headers: { 
-                    'Content-Type': 'application/json', 
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify(params),
-                isBase64Encoded: false
-            }
-            
-            callback(null, response);
-            
+            callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t create new feed."));
             return;
         }
-        
-        const body = {
-            message: "success",
-            feed: newFeed
-        };
-    
-        const response = {
-            statusCode: 201,
-            body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            isBase64Encoded: false
-        };
-    
-        callback(null, response);
-    
+        callback(null, resTemplate.successResponse(201, {feed: newFeed}));
     });
  
 };

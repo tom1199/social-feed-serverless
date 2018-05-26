@@ -1,8 +1,8 @@
 'use strict';
 
 const dynamodb = require("../dynamodb");
-const uuid = require("uuid");
 const resTemplate = require("../response");
+const Promise = require("promise");
 
 function isValidateRequest(event) {
     //console.log("event = ", event);
@@ -31,61 +31,61 @@ exports.handler = function(event, context, callback) {
     const body = JSON.parse(event.body || "{}")
     const likedBy = body.likedBy;
     const timestamp = new Date().getTime();
-
-    // Check if like exist
-    const query = {
-        TableName: process.env.LIKE_TABLE,
-        FilterExpression: "feedId = :feedId and likedBy = :likedBy",
-        ExpressionAttributeValues: {
-            ":feedId": feedId,
-            ":likedBy": likedBy
-        }
-        // KeyConditionExpression: "feedId = :feedId and likedBy = :likedBy",
-        // ExpressionAttributeValues: {
-        //     ":feedId": feedId,
-        //     ":likedBy": likedBy
-        // }
-    }
-    dynamodb.scan(query, (error, data) => {
-       // handle potential errors
-        if (error) {
-            console.error(error);
-            callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error.", "Error when query like info."));
-            return;
-        }
-        
-        // like found
-        if (data.Items.length > 0) {
-            console.log("Found a like exist!");
-            callback(null, resTemplate.successResponse(200, {like: data.Items[0]}));
-            return;
-        }
-        
-        
-        // Otherwise create new record
-        const newLike = {
-            id: uuid.v1(),
-            feedId: feedId,
-            likedBy: likedBy,
-            createdAt: timestamp,
-            updatedAt: timestamp,
-        };
     
+    const updateUserLikeFeedTable = new Promise((resolve, reject) => {
+        const newLike = {
+            feedId: feedId,
+            userId: likedBy,
+            createdAt: timestamp
+        };
+        
         const params = {
-            TableName: process.env.LIKE_TABLE,
+            TableName: process.env.USER_LIKE_FEED_TABLE,
             Item: newLike,
         };
-
-        // write to the database
+    
+        // write the todo to the database
         dynamodb.put(params, (error) => {
             // handle potential errors
             if (error) {
                 console.error(error);
-                callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t create new like."));
+                reject(error);
                 return;
             }
-            
-            callback(null, resTemplate.successResponse(200, {like: newLike}));
+            resolve(newLike);
         });
     });
+    
+    const updateFeedLikedByUserTable = new Promise((resolve, reject) => {
+        const newLike = {
+            feedId: feedId,
+            userId: likedBy,
+            createdAt: timestamp
+        };
+        
+        const params = {
+            TableName: process.env.FEED_LIKED_BY_USER_TABLE,
+            Item: newLike,
+        };
+    
+        // write the todo to the database
+        dynamodb.put(params, (error) => {
+            // handle potential errors
+            if (error) {
+                console.error(error);
+                reject(error);
+                return;
+            }
+            resolve(newLike);
+        });
+    });
+    
+    Promise.all([updateUserLikeFeedTable, updateFeedLikedByUserTable])
+    .then((res) => {
+        callback(null, resTemplate.successResponse(200));
+    })
+    .catch((error) => {
+        console.error(error);
+        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t create new like."));
+    })
 };
