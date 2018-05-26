@@ -98,6 +98,7 @@ Resources:
         Variables:
           USER_LIKE_FEED_TABLE: !Ref UserLikeFeedTable
           FEED_LIKED_BY_USER_TABLE: !Ref FeedLikedByUserTable
+          FEED_TABLE: !Ref FeedTable
       Events:
         GetEvent:
           Type: Api
@@ -116,6 +117,7 @@ Resources:
         Variables:
           USER_LIKE_FEED_TABLE: !Ref UserLikeFeedTable
           FEED_LIKED_BY_USER_TABLE: !Ref FeedLikedByUserTable
+          FEED_TABLE: !Ref FeedTable
       Events:
         GetEvent:
           Type: Api
