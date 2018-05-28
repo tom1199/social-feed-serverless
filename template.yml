@@ -223,7 +223,7 @@ Resources:
             !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
         Environment:
           Variables:
-            USER_FOLLOW_TABLE: !Ref FollowUserTable,
+            USER_FOLLOW_TABLE: !Ref FollowUserTable
             USER_TABLE: !Ref UserTable
         Events:
           GetEvent:

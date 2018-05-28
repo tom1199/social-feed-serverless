@@ -67,12 +67,12 @@ exports.handler = (event, context, callback) => {
                 }
             };
 
-            dynamodb.scan(paramsUser, (error, result) => {
+            dynamodb.scan(paramsUser, (error, userResult) => {
                 if (error) {
                     console.error(error);
                 }
 
-                followUser.put(result.Item)
+                followUser.put(userResult.Item)
             });
         });
 
