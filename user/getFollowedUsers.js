@@ -72,7 +72,7 @@ exports.handler = (event, context, callback) => {
                     console.error(error);
                 }
 
-                followUser.put(userResult.Item)
+                followUser.put(userResult.Item);
             });
         });
 

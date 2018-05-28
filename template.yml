@@ -213,7 +213,7 @@ Resources:
               Path: /users/{userId}/unfollow
               Method: POST
 
-  GetFollowedUser:
+  GetFollowingUser:
       Type: AWS::Serverless::Function
       Properties:
         Handler: user/getFololowedUser.handler
