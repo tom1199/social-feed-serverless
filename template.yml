@@ -177,6 +177,61 @@ Resources:
           Properties:
             Path: /users
             Method: PUT
+  FollowUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: user/followUser.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          USER_FOLLOW_TABLE: !Ref FollowUserTable
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /users/{userId}/follow
+            Method: POST
+
+  UnfollowUser:
+      Type: AWS::Serverless::Function
+      Properties:
+        Handler: user/unFollowUser.handler
+        Runtime: nodejs6.10
+        Role:
+          Fn::ImportValue:
+            !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+        Environment:
+          Variables:
+            USER_FOLLOW_TABLE: !Ref FollowUserTable
+        Events:
+          GetEvent:
+            Type: Api
+            Properties:
+              Path: /users/{userId}/unfollow
+              Method: POST
+
+  GetFollowedUser:
+      Type: AWS::Serverless::Function
+      Properties:
+        Handler: user/getFololowedUser.handler
+        Runtime: nodejs6.10
+        Role:
+          Fn::ImportValue:
+            !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+        Environment:
+          Variables:
+            USER_FOLLOW_TABLE: !Ref FollowUserTable,
+            USER_TABLE: !Ref UserTable
+        Events:
+          GetEvent:
+            Type: Api
+            Properties:
+              Path: /users/{userId}/followUser
+              Method: GET
+
 
 #Util Services            
   CreateEmailSubscriber:
@@ -298,6 +353,24 @@ Resources:
         - AttributeName: feedId
           KeyType: HASH
         - AttributeName: userId
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+  FollowUserTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: followedUserId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: followedUserId
           KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 5

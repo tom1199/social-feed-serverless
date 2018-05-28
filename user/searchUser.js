@@ -3,7 +3,6 @@ const randomBytes = require('crypto').randomBytes;
 const AWS = require('aws-sdk');
 
 const dynamodb = require("../dynamodb");
-//const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = (event, context, callback) => {
     // if (!event.requestContext.authorizer) {
