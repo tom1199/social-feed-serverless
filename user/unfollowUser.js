@@ -23,7 +23,7 @@ function isValidateRequest(event) {
 exports.handler = function(event, context, callback) {
     if (isValidateRequest(event) === false) {
         console.error('invalid data');
-        callback(null, resTemplate.errorResponse(400, "Bad Request", "invalid like input"))
+        callback(null, resTemplate.errorResponse(400, "Bad Request", "invalid like input"));
         return;
     }
     
@@ -61,7 +61,7 @@ exports.handler = function(event, context, callback) {
             console.log("Checking Followed User Or Not....");
             const params = {
                 TableName: process.env.USER_FOLLOW_TABLE,
-                KeyConditionExpression: "feedId = :feedId and userId = :userId",
+                KeyConditionExpression: "userId = :userId and followedUserId = :followedUserId",
                 ExpressionAttributeValues: {
                     ":userId":userId,
                     ":followedUserId":followedUserId
@@ -85,7 +85,7 @@ exports.handler = function(event, context, callback) {
     isFolowUser().then((exist) => {
         console.log("User already followed = " + exist)
         if (exist === false) {
-            console.log("Incrementing like count....");
+            console.log("Update user followed = " + exist)
             return Promise.all([updateUserFollowTable()]);
         }
     }).then((res) => {
@@ -93,6 +93,6 @@ exports.handler = function(event, context, callback) {
     })
     .catch((error) => {
         console.error(error);
-        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t create new like."));
+        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t delete user follow."));
     })
 };
