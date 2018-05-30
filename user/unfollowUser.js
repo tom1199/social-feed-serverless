@@ -8,12 +8,12 @@ const Promise = require("promise");
 function isValidateRequest(event) {
     const body = JSON.parse(event.body || "{}")
     const userId = event.pathParameters.userId;
-    const folowedUserId = body.folowedUserId;
+    const followedUserId = body.followedUserId;
     if (userId === undefined) {
         console.log("Missing User Id");
         return false;
     }
-    if (folowedUserId === undefined) {
+    if (followedUserId === undefined) {
         console.log("Missing Follow User Id");
         return false;
     }
@@ -23,7 +23,7 @@ function isValidateRequest(event) {
 exports.handler = function(event, context, callback) {
     if (isValidateRequest(event) === false) {
         console.error('invalid data');
-        callback(null, resTemplate.errorResponse(400, "Bad Request", "invalid like input"));
+        callback(null, resTemplate.errorResponse(400, "Bad Request", "invalid Unfollow User input"));
         return;
     }
     
@@ -93,6 +93,6 @@ exports.handler = function(event, context, callback) {
     })
     .catch((error) => {
         console.error(error);
-        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t delete user follow."));
+        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t delete user."));
     })
 };
