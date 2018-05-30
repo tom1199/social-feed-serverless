@@ -195,42 +195,42 @@ Resources:
             Path: /users/{userId}/follow
             Method: POST
 
-  UnfollowUser:
-      Type: AWS::Serverless::Function
-      Properties:
-        Handler: user/unFollowUser.handler
-        Runtime: nodejs6.10
-        Role:
-          Fn::ImportValue:
-            !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-        Environment:
-          Variables:
-            USER_FOLLOW_TABLE: !Ref FollowUserTable
-        Events:
-          GetEvent:
-            Type: Api
-            Properties:
-              Path: /users/{userId}/unfollow
-              Method: POST
+  # UnfollowUser:
+  #     Type: AWS::Serverless::Function
+  #     Properties:
+  #       Handler: user/unFollowUser.handler
+  #       Runtime: nodejs6.10
+  #       Role:
+  #         Fn::ImportValue:
+  #           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  #       Environment:
+  #         Variables:
+  #           USER_FOLLOW_TABLE: !Ref FollowUserTable
+  #       Events:
+  #         GetEvent:
+  #           Type: Api
+  #           Properties:
+  #             Path: /users/{userId}/unfollow
+  #             Method: POST
 
-  GetFollowingUsers:
-      Type: AWS::Serverless::Function
-      Properties:
-        Handler: user/getFololowedUser.handler
-        Runtime: nodejs6.10
-        Role:
-          Fn::ImportValue:
-            !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-        Environment:
-          Variables:
-            USER_FOLLOW_TABLE: !Ref FollowUserTable
-            USER_TABLE: !Ref UserTable
-        Events:
-          GetEvent:
-            Type: Api
-            Properties:
-              Path: /users/{userId}/followUser
-              Method: GET
+  # GetFollowingUsers:
+  #     Type: AWS::Serverless::Function
+  #     Properties:
+  #       Handler: user/getFololowedUser.handler
+  #       Runtime: nodejs6.10
+  #       Role:
+  #         Fn::ImportValue:
+  #           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  #       Environment:
+  #         Variables:
+  #           USER_FOLLOW_TABLE: !Ref FollowUserTable
+  #           USER_TABLE: !Ref UserTable
+  #       Events:
+  #         GetEvent:
+  #           Type: Api
+  #           Properties:
+  #             Path: /users/{userId}/followUser
+  #             Method: GET
 
 
 #Util Services            
