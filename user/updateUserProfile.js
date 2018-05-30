@@ -40,7 +40,7 @@ exports.handler = (event, context, callback) => {
     const params = {
         TableName: process.env.USER_TABLE,
         Key: {
-            ":userId": userId
+            "userId": userId
         },
         UpdateExpression: "set imageUrl = :imageUrl",
         ExpressionAttributeValues: {
