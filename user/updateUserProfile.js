@@ -34,16 +34,17 @@ exports.handler = (event, context, callback) => {
         return;
     }
 
-    //const userId = data.userId;
+    const userId = data.userId + '';
+    const imageUrl = data.imageUrl + '';
 
     const params = {
         TableName: process.env.USER_TABLE,
         Key: {
-            "userId": "7ad2fc60-5f75-11e8-8670-39bebf41d0f6"
+            ":userId": userId
         },
         UpdateExpression: "set imageUrl = :imageUrl",
         ExpressionAttributeValues: {
-            ":imageUrl": "abcdef.jpg"
+            ":imageUrl": imageUrl
         },
         ReturnValues:"UPDATED_NEW"
     };
