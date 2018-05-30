@@ -44,7 +44,7 @@ exports.handler = function(event, context, callback) {
                 }
             };
             
-            dynamodb.delte(params, (error) => {
+            dynamodb.delete(params, (error) => {
                 // handle potential errors
                 if (error) {
                     console.error(error);
