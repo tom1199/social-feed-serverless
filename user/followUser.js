@@ -6,7 +6,7 @@ const resTemplate = require("../response");
 const Promise = require("promise");
 
 function isValidateRequest(event) {
-    const body = JSON.parse(event.body || "{}")
+    const body = JSON.parse(event.body || "{}");
     const userId = event.pathParameters.userId;
     const followedUserId = body.followedUserId;
     if (userId === undefined) {
@@ -23,21 +23,20 @@ function isValidateRequest(event) {
 exports.handler = function(event, context, callback) {
     if (isValidateRequest(event) === false) {
         console.error('invalid data');
-        callback(null, resTemplate.errorResponse(400, "Bad Request", "invalid like input"))
+        callback(null, resTemplate.errorResponse(400, "Bad Request", "invalid like input"));
         return;
     }
     
     const userId = event.pathParameters.userId;
-    const body = JSON.parse(event.body || "{}")
+    const body = JSON.parse(event.body || "{}");
     const followedUserId = body.followedUserId;
     const timestamp = new Date().getTime();
     
     function updateUserFollowTable() {
         return new Promise(function(resolve, reject) {
-            console.log("Updating UserLikeFeedTable....");
             const newFollwUser = {
                 userId: userId,
-                followedUserId: folowedUserId,
+                followedUserId: followedUserId,
                 createdAt: timestamp
             };
             
@@ -63,7 +62,7 @@ exports.handler = function(event, context, callback) {
             console.log("Checking Followed User Or Not....");
             const params = {
                 TableName: process.env.USER_FOLLOW_TABLE,
-                KeyConditionExpression: "userId = :userId and follwedUserId = :follwedUserId",
+                KeyConditionExpression: "userId = :userId and followedUserId = :follwedUserId",
                 ExpressionAttributeValues: {
                     ":userId":userId,
                     ":follwedUserId":followedUserId
@@ -79,13 +78,13 @@ exports.handler = function(event, context, callback) {
                     return;
                 }
                 const exist = result.Count > 0 ? true : false;
-                resolve(exist)
+                resolve(exist);
             });
         });
     }
     
     isFollowUser().then((exist) => {
-        console.log("User already followed = " + exist)
+        console.log("User already followed = " + exist);
         if (exist === false) {
             return Promise.all([updateUserFollowTable()]);
         }
@@ -94,6 +93,6 @@ exports.handler = function(event, context, callback) {
     })
     .catch((error) => {
         console.error(error);
-        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t create new like."));
-    })
+        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t create new follow." + error));
+    });
 };
