@@ -8,12 +8,12 @@ const Promise = require("promise");
 function isValidateRequest(event) {
     const body = JSON.parse(event.body || "{}")
     const userId = event.pathParameters.userId;
-    const folowedUserId = body.folowedUserId;
+    const followedUserId = body.followedUserId;
     if (userId === undefined) {
         console.log("Missing User Id");
         return false;
     }
-    if (folowedUserId === undefined) {
+    if (followedUserId === undefined) {
         console.log("Missing Follow User Id");
         return false;
     }
@@ -29,7 +29,7 @@ exports.handler = function(event, context, callback) {
     
     const userId = event.pathParameters.userId;
     const body = JSON.parse(event.body || "{}")
-    const folowedUserId = body.folowedUserId;
+    const followedUserId = body.followedUserId;
     const timestamp = new Date().getTime();
     
     function updateUserFollowTable() {
