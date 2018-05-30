@@ -177,41 +177,41 @@ Resources:
           Properties:
             Path: /users
             Method: PUT
-  FollowUser:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: user/followUser.handler
-      Runtime: nodejs6.10
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Environment:
-        Variables:
-          USER_FOLLOW_TABLE: !Ref FollowUserTable
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /users/{userId}/follow
-            Method: POST
+  # FollowUser:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: user/followUser.handler
+  #     Runtime: nodejs6.10
+  #     Role:
+  #       Fn::ImportValue:
+  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  #     Environment:
+  #       Variables:
+  #         USER_FOLLOW_TABLE: !Ref FollowUserTable
+  #     Events:
+  #       GetEvent:
+  #         Type: Api
+  #         Properties:
+  #           Path: /users/{userId}/follow
+  #           Method: POST
 
-  # UnfollowUser:
-  #     Type: AWS::Serverless::Function
-  #     Properties:
-  #       Handler: user/unFollowUser.handler
-  #       Runtime: nodejs6.10
-  #       Role:
-  #         Fn::ImportValue:
-  #           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-  #       Environment:
-  #         Variables:
-  #           USER_FOLLOW_TABLE: !Ref FollowUserTable
-  #       Events:
-  #         GetEvent:
-  #           Type: Api
-  #           Properties:
-  #             Path: /users/{userId}/unfollow
-  #             Method: POST
+  UnfollowUser:
+      Type: AWS::Serverless::Function
+      Properties:
+        Handler: user/unfollowUser.handler
+        Runtime: nodejs6.10
+        Role:
+          Fn::ImportValue:
+            !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+        Environment:
+          Variables:
+            USER_FOLLOW_TABLE: !Ref FollowUserTable
+        Events:
+          GetEvent:
+            Type: Api
+            Properties:
+              Path: /users/{userId}/unfollow
+              Method: POST
 
   # GetFollowingUsers:
   #     Type: AWS::Serverless::Function
