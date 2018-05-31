@@ -54,6 +54,12 @@ exports.handler = function(event, context, callback) {
     const userId = event.queryStringParameters.userId;
     
     getFollowingUser(userId, (error, userIds) => {
+        
+        if (userId.length == 0) {
+            callback(null, resTemplate.successResponse(200, {feeds: []}));
+            return
+        }
+        
         const attributeValues = userIds.reduce((total, currentValue) => {
             total[":" + currentValue] = currentValue
            return total; 
