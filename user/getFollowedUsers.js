@@ -27,7 +27,7 @@ exports.handler = (event, context, callback) => {
     const userId = event.pathParameters.userId;
 
     const paramsFollwUser = {
-        TableName: process.env.FOLLOW_USER_TABLE,
+        TableName: process.env.USER_FOLLOW_TABLE,
         FilterExpression: "userId = :userId",
         ExpressionAttributeValues: {
             ":userId": userId
@@ -56,14 +56,18 @@ exports.handler = (event, context, callback) => {
             return;
         }
 
-        const followUserList;
+        var followUserList = [];
+
+        console.log("Follow User List => " + result.Items)
 
         result.Items.forEach(followUser => {
+            console.log("User Id =>" + followUser.userId);
+            console.log("Followed User Id =>" + followUser.followedUserId);
             const paramsUser = {
                 TableName: process.env.USER_TABLE,
-                FilterExpression: "userId = :userId",
+                FilterExpression: "followedUserId = :followedUserId",
                 ExpressionAttributeValues: {
-                    ":userId": followUser.userId
+                    ":followedUserId": followUser.followedUserId
                 }
             };
 
@@ -71,25 +75,28 @@ exports.handler = (event, context, callback) => {
                 if (error) {
                     console.error(error);
                 }
-
-                followUser.put(userResult.Item);
+                console.log("User Result =>" + userResult.Items);
+                console.log("User Result JSON => " + JSON.stringify(userResult.Items));
+                followUserList.push(userResult.Items[0]);
+                if(followUserList.length === result.Items.length){
+                    const body = {
+                        message: "success",
+                        users: followUserList
+                    };
+                    
+                    console.log("User Result JSON => " + JSON.stringify(userResult.Items));
+                    const response = {
+                        statusCode: 200,
+                        body: JSON.stringify(body),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*'
+                        },
+                        isBase64Encoded: false
+                    };
+                    callback(null, response);
+                }
             });
         });
-
-        const body = {
-            message: "success",
-            users: followUserList
-        };
-   
-        const response = {
-            statusCode: 200,
-            body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            isBase64Encoded: false
-        };
-        callback(null, response);
     });
 };

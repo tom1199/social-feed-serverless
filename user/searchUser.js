@@ -17,7 +17,7 @@ exports.handler = (event, context, callback) => {
         event.queryStringParameters.searchFilter !== "") {
         searchFilter = event.queryStringParameters.searchFilter;
         //filterExpression = "contains(userId, :searchFilter) or contains(userName, :searchFilter) or contains(email, :searchFilter)";
-        filterExpression = "contains(userName, :searchFilter)";
+        filterExpression = "contains(userName, :searchFilter)"; 
     }
 
     var params = "";
@@ -47,6 +47,7 @@ exports.handler = (event, context, callback) => {
             };
             
             const response = {
+                
                 statusCode: error.statusCode || 501,
                 headers: { 
                     'Content-Type': 'application/json', 
@@ -60,7 +61,7 @@ exports.handler = (event, context, callback) => {
             return;
         }
 
-
+        
         const body = {
             message: "success",
             users: result.Items

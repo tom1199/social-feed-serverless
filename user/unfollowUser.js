@@ -7,8 +7,8 @@ const Promise = require("promise");
 
 function isValidateRequest(event) {
     const body = JSON.parse(event.body || "{}")
-    const userId = event.pathParameters.userId;
-    const followedUserId = body.followedUserId;
+    const userId = event.pathParameters.userId + '';
+    const followedUserId = body.followedUserId + '';
     if (userId === undefined) {
         console.log("Missing User Id");
         return false;
@@ -27,9 +27,9 @@ exports.handler = function(event, context, callback) {
         return;
     }
     
-    const userId = event.pathParameters.userId;
-    const body = JSON.parse(event.body || "{}")
-    const folowedUserId = body.folowedUserId;
+    const userId = event.pathParameters.userId + '';
+    const body = JSON.parse(event.body || "{}");
+    const followedUserId = body.followedUserId + '';
     const timestamp = new Date().getTime();
     
     function updateUserFollowTable() {
@@ -40,7 +40,7 @@ exports.handler = function(event, context, callback) {
                 TableName: process.env.USER_FOLLOW_TABLE,
                 Key: {
                     "userId": userId,
-                    "followedUserId": folowedUserId
+                    "followedUserId": followedUserId
                 }
             };
             
@@ -77,14 +77,14 @@ exports.handler = function(event, context, callback) {
                     return;
                 }
                 const exist = result.Count > 0 ? true : false;
-                resolve(exist)
+                resolve(exist);
             });
         });
     }
     
-    isFolowUser().then((exist) => {
+    isFollowUser().then((exist) => {
         console.log("User already followed = " + exist)
-        if (exist === false) {
+        if (exist === true) {
             console.log("Update user followed = " + exist)
             return Promise.all([updateUserFollowTable()]);
         }
@@ -93,6 +93,6 @@ exports.handler = function(event, context, callback) {
     })
     .catch((error) => {
         console.error(error);
-        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t delete user."));
+        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t unfollow user."));
     })
 };
