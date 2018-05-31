@@ -58,6 +58,8 @@ exports.handler = (event, context, callback) => {
 
         var followUserList = [];
 
+        console.log("Follow User List => " + result.Items)
+
         result.Items.forEach(followUser => {
             const paramsUser = {
                 TableName: process.env.USER_TABLE,
@@ -71,7 +73,8 @@ exports.handler = (event, context, callback) => {
                 if (error) {
                     console.error(error);
                 }
-                followUserList.push(userResult.Item);
+                console.log("User Result" + userResult.Items);
+                followUserList.push(userResult.Items);
             });
         });
 
