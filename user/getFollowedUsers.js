@@ -62,11 +62,12 @@ exports.handler = (event, context, callback) => {
 
         result.Items.forEach(followUser => {
             console.log("User Id =>" + followUser.userId);
+            console.log("Followed User Id =>" + followUser.followedUserId);
             const paramsUser = {
                 TableName: process.env.USER_TABLE,
-                FilterExpression: "userId = :userId",
+                FilterExpression: "followedUserId = :followedUserId",
                 ExpressionAttributeValues: {
-                    ":userId": followUser.userId
+                    ":followedUserId": followUser.followedUserId
                 }
             };
 
@@ -76,24 +77,26 @@ exports.handler = (event, context, callback) => {
                 }
                 console.log("User Result =>" + userResult.Items);
                 console.log("User Result JSON => " + JSON.stringify(userResult.Items));
-                followUserList.concat(userResult.Items);
+                followUserList.push(userResult.Items[0]);
+                if(followUserList.length === result.Items.length){
+                    const body = {
+                        message: "success",
+                        users: followUserList
+                    };
+                    
+                    console.log("User Result JSON => " + JSON.stringify(userResult.Items));
+                    const response = {
+                        statusCode: 200,
+                        body: JSON.stringify(body),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*'
+                        },
+                        isBase64Encoded: false
+                    };
+                    callback(null, response);
+                }
             });
         });
-
-        const body = {
-            message: "success",
-            users: followUserList
-        };
-   
-        const response = {
-            statusCode: 200,
-            body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            isBase64Encoded: false
-        };
-        callback(null, response);
     });
 };
