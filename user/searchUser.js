@@ -9,6 +9,8 @@ exports.handler = (event, context, callback) => {
     //     errorResponse('Authorization not configured', context.awsRequestId, callback);
     //     return;
     // }
+
+    console.log("Event Request Authorizer => " +event.requestContext.authorizer);
     
     var filterExpression = "";
     var searchFilter = "";
@@ -16,8 +18,8 @@ exports.handler = (event, context, callback) => {
     if (event.queryStringParameters.searchFilter !== undefined &&
         event.queryStringParameters.searchFilter !== "") {
         searchFilter = event.queryStringParameters.searchFilter;
-        //filterExpression = "contains(userId, :searchFilter) or contains(userName, :searchFilter) or contains(email, :searchFilter)";
-        filterExpression = "contains(userName, :searchFilter)"; 
+        filterExpression = "contains(userName, :searchFilter) or contains(email, :searchFilter)";
+        // filterExpression = "contains(userName, :searchFilter)"; 
     }
 
     var params = "";
