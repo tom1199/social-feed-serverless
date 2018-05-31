@@ -9,11 +9,12 @@ function isValidUser(user) {
 
 exports.handler = (event, context, callback) => {
     console.log(event);
-    
-    const data = JSON.parse(event || "{}");
+    console.log(event.userName);
+    // const data = JSON.parse(event || "{}");
+    // console.log(data);
     const timestamp = new Date().getTime();
 
-    if (isValidUser(data) === false) {
+    if (isValidUser(event) === false) {
         console.error('invalid data');
         const body = {
             error: "Bad Request",
@@ -45,13 +46,13 @@ exports.handler = (event, context, callback) => {
     // };
 
     const newUser = {
-        userId: data.userName,
-        userName: data.userName,
-        userNameSearch: data.userName.toLowerCase(),
+        userId: event.userName,
+        userName: event.userName,
+        userNameSearch: event.userName.toLowerCase(),
         imageUrl: 'default.jpg',
-        email: data.request.userAttributes.email,
+        email: event.request.userAttributes.email,
         createdAt: timestamp,
-        updatedAt: timestamp,
+        updatedAt: timestamp
     };
 
     const params = {
@@ -79,8 +80,8 @@ exports.handler = (event, context, callback) => {
                 body: JSON.stringify(body),
                 isBase64Encoded: false
             }
-            
-            data.response = response;
+            console.log("error");
+            event.response = response;
             callback(null, response);
             
             return;
@@ -91,6 +92,7 @@ exports.handler = (event, context, callback) => {
             feed: newUser
         };
     
+        console.log("Before Response");
         const response = {
             statusCode: 201,
             body: JSON.stringify(body),
@@ -101,9 +103,11 @@ exports.handler = (event, context, callback) => {
             isBase64Encoded: false
         };
     
-        data.response = response;
+        event.response = response;
+        console.log(event);
+        console.log("After Response");
 
-        callback(null, data);
+        callback(null, event);
     
     });
 };
