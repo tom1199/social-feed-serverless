@@ -1,4 +1,4 @@
-aws dynamodb delete-table --endpoint-url http://localhost:8000 --table-name Local-FeedTable
+# aws dynamodb delete-table --endpoint-url http://localhost:8000 --table-name Local-FeedTable
 aws dynamodb create-table \
     --endpoint-url http://localhost:8000 \
     --table-name Local-FeedTable \
@@ -11,7 +11,7 @@ aws dynamodb create-table \
     --provisioned-throughput \
         ReadCapacityUnits=10,WriteCapacityUnits=5
 
-aws dynamodb delete-table --endpoint-url http://localhost:8000 --table-name Local-UserTable
+# aws dynamodb delete-table --endpoint-url http://localhost:8000 --table-name Local-UserTable
 aws dynamodb create-table \
     --endpoint-url http://localhost:8000 \
     --table-name Local-UserTable \
@@ -24,7 +24,7 @@ aws dynamodb create-table \
     --provisioned-throughput \
         ReadCapacityUnits=10,WriteCapacityUnits=5
 
-aws dynamodb delete-table --endpoint-url http://localhost:8000 --table-name Local-UserLikeFeedTable
+# aws dynamodb delete-table --endpoint-url http://localhost:8000 --table-name Local-UserLikeFeedTable
 aws dynamodb create-table \
     --endpoint-url http://localhost:8000 \
     --table-name Local-UserLikeFeedTable \
@@ -37,7 +37,7 @@ aws dynamodb create-table \
     --provisioned-throughput \
         ReadCapacityUnits=5,WriteCapacityUnits=5
 
-aws dynamodb delete-table --endpoint-url http://localhost:8000 --table-name Local-FeedLikedByUserTable
+# aws dynamodb delete-table --endpoint-url http://localhost:8000 --table-name Local-FeedLikedByUserTable
 aws dynamodb create-table \
     --endpoint-url http://localhost:8000 \
     --table-name Local-FeedLikedByUserTable \
@@ -50,3 +50,15 @@ aws dynamodb create-table \
     --provisioned-throughput \
         ReadCapacityUnits=5,WriteCapacityUnits=5
         
+# aws dynamodb delete-table --endpoint-url http://localhost:8000 --table-name Local-FollowUserTable
+aws dynamodb create-table \
+    --endpoint-url http://localhost:8000 \
+    --table-name Local-FollowUserTable \
+    --attribute-definitions \
+        AttributeName=userId,AttributeType=S \
+        AttributeName=followedUserId,AttributeType=S \
+    --key-schema \
+        AttributeName=userId,KeyType=HASH \
+        AttributeName=followedUserId,KeyType=RANGE \
+    --provisioned-throughput \
+        ReadCapacityUnits=5,WriteCapacityUnits=5

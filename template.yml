@@ -19,20 +19,20 @@ Parameters:
 #       Type: Canary10Percent5Minutes
 
 Resources:
-  GetHelloWorld:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.get
-      Runtime: nodejs4.3
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /
-            Method: get
+  # GetHelloWorld:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: index.get
+  #     Runtime: nodejs4.3
+  #     Role:
+  #       Fn::ImportValue:
+  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  #     Events:
+  #       GetEvent:
+  #         Type: Api
+  #         Properties:
+  #           Path: /
+  #           Method: get
   
   # FeedService Functions
   CreateFeed:
@@ -80,6 +80,7 @@ Resources:
       Environment:
         Variables:
           FEED_TABLE: !Ref FeedTable
+          USER_FOLLOW_TABLE: !Ref FollowUserTable
       Events:
         GetEvent:
           Type: Api
