@@ -65,9 +65,9 @@ exports.handler = (event, context, callback) => {
             console.log("Followed User Id =>" + followUser.followedUserId);
             const paramsUser = {
                 TableName: process.env.USER_TABLE,
-                FilterExpression: "followedUserId = :followedUserId",
+                FilterExpression: "userId = :userId",
                 ExpressionAttributeValues: {
-                    ":followedUserId": followUser.followedUserId
+                    ":userId": followUser.followedUserId
                 }
             };
 
