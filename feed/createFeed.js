@@ -25,7 +25,7 @@ exports.handler = function(event, context, callback) {
         return;
     }
     
-    const newFeed = {
+    var newFeed = {
         title: data.title,
         imageUrl: data.imageUrl,
         ownerId: data.ownerId,
@@ -34,6 +34,8 @@ exports.handler = function(event, context, callback) {
         createdAt: timestamp,
         updatedAt: timestamp,
     };
+    
+    if (data.ownerName) { newFeed.ownerName = data.ownerName; }
     
     const params = {
         TableName: process.env.FEED_TABLE,
