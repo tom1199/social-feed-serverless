@@ -71,8 +71,7 @@ exports.handler = (event, context, callback) => {
                 if (error) {
                     console.error(error);
                 }
-
-                followUser.push(userResult.Item);
+                followUserList.push(userResult.Item);
             });
         });
 
