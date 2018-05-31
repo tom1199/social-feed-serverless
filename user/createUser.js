@@ -49,7 +49,7 @@ exports.handler = (event, context, callback) => {
         userId: event.userName,
         userName: event.userName,
         userNameSearch: event.userName.toLowerCase(),
-        imageUrl: 'default.jpg',
+        imageUrl: '',
         email: event.request.userAttributes.email,
         createdAt: timestamp,
         updatedAt: timestamp
