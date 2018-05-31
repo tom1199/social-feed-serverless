@@ -217,7 +217,7 @@ Resources:
   GetFollowingUsers:
       Type: AWS::Serverless::Function
       Properties:
-        Handler: user/getFololowedUser.handler
+        Handler: user/getFollowedUsers.handler
         Runtime: nodejs6.10
         Role:
           Fn::ImportValue:

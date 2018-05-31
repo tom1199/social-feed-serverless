@@ -8,6 +8,7 @@ function isValidUser(user) {
 }
 
 exports.handler = (event, context, callback) => {
+    console.log(event);
     console.log("body = ", event.body);
     const data = JSON.parse(event.body || "{}");
     const timestamp = new Date().getTime();
@@ -33,12 +34,22 @@ exports.handler = (event, context, callback) => {
         return;
     }
 
+    // const newUser = {
+    //     userId: uuid.v1(),
+    //     userName: data.userName,
+    //     userNameSearch: data.userName.toLowerCase(),
+    //     imageUrl: 'default.jpg',
+    //     email: data.email,
+    //     createdAt: timestamp,
+    //     updatedAt: timestamp,
+    // };
+
     const newUser = {
-        userId: uuid.v1(),
+        userId: data.userName,
         userName: data.userName,
         userNameSearch: data.userName.toLowerCase(),
         imageUrl: 'default.jpg',
-        email: data.email,
+        email: '',
         createdAt: timestamp,
         updatedAt: timestamp,
     };
