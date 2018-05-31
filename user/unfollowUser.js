@@ -28,7 +28,7 @@ exports.handler = function(event, context, callback) {
     }
     
     const userId = event.pathParameters.userId;
-    const body = JSON.parse(event.body || "{}")
+    const body = JSON.parse(event.body || "{}");
     const folowedUserId = body.folowedUserId;
     const timestamp = new Date().getTime();
     
@@ -77,12 +77,12 @@ exports.handler = function(event, context, callback) {
                     return;
                 }
                 const exist = result.Count > 0 ? true : false;
-                resolve(exist)
+                resolve(exist);
             });
         });
     }
     
-    isFolowUser().then((exist) => {
+    isFollowUser().then((exist) => {
         console.log("User already followed = " + exist)
         if (exist === false) {
             console.log("Update user followed = " + exist)
@@ -93,6 +93,6 @@ exports.handler = function(event, context, callback) {
     })
     .catch((error) => {
         console.error(error);
-        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t delete user."));
+        callback(null, resTemplate.errorResponse(error.statusCode || 501, "Internal Server Error", "Couldn\'t unfollow user."));
     })
 };
