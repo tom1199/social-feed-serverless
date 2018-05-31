@@ -61,6 +61,7 @@ exports.handler = (event, context, callback) => {
         console.log("Follow User List => " + result.Items)
 
         result.Items.forEach(followUser => {
+            console.log("User Id =>" + followUser.userId);
             const paramsUser = {
                 TableName: process.env.USER_TABLE,
                 FilterExpression: "userId = :userId",
@@ -73,8 +74,9 @@ exports.handler = (event, context, callback) => {
                 if (error) {
                     console.error(error);
                 }
-                console.log("User Result" + userResult.Items);
-                followUserList.push(userResult.Items);
+                console.log("User Result =>" + userResult.Items);
+                console.log("User Result JSON => " + JSON.stringify(userResult.Items));
+                followUserList.concat(userResult.Items);
             });
         });
 
