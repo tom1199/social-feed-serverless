@@ -84,7 +84,7 @@ exports.handler = function(event, context, callback) {
     
     isFollowUser().then((exist) => {
         console.log("User already followed = " + exist)
-        if (exist === false) {
+        if (exist === true) {
             console.log("Update user followed = " + exist)
             return Promise.all([updateUserFollowTable()]);
         }
