@@ -56,7 +56,7 @@ exports.handler = (event, context, callback) => {
             return;
         }
 
-        const followUserList;
+        var followUserList = [];
 
         result.Items.forEach(followUser => {
             const paramsUser = {
@@ -72,7 +72,7 @@ exports.handler = (event, context, callback) => {
                     console.error(error);
                 }
 
-                followUser.put(userResult.Item);
+                followUser.push(userResult.Item);
             });
         });
 
