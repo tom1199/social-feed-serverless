@@ -55,7 +55,7 @@ exports.handler = function(event, context, callback) {
     
     getFollowingUser(userId, (error, userIds) => {
         
-        if (userId.length == 0) {
+        if (userIds.length == 0) {
             callback(null, resTemplate.successResponse(200, {feeds: []}));
             return
         }
