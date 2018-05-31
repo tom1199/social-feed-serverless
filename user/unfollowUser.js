@@ -29,7 +29,7 @@ exports.handler = function(event, context, callback) {
     
     const userId = event.pathParameters.userId;
     const body = JSON.parse(event.body || "{}");
-    const folowedUserId = body.folowedUserId;
+    const followedUserId = body.followedUserId;
     const timestamp = new Date().getTime();
     
     function updateUserFollowTable() {
@@ -40,7 +40,7 @@ exports.handler = function(event, context, callback) {
                 TableName: process.env.USER_FOLLOW_TABLE,
                 Key: {
                     "userId": userId,
-                    "followedUserId": folowedUserId
+                    "followedUserId": followedUserId
                 }
             };
             
