@@ -7,8 +7,8 @@ const Promise = require("promise");
 
 function isValidateRequest(event) {
     const body = JSON.parse(event.body || "{}")
-    const userId = event.pathParameters.userId;
-    const followedUserId = body.followedUserId;
+    const userId = event.pathParameters.userId + '';
+    const followedUserId = body.followedUserId + '';
     if (userId === undefined) {
         console.log("Missing User Id");
         return false;
@@ -27,9 +27,9 @@ exports.handler = function(event, context, callback) {
         return;
     }
     
-    const userId = event.pathParameters.userId;
+    const userId = event.pathParameters.userId + '';
     const body = JSON.parse(event.body || "{}");
-    const followedUserId = body.followedUserId;
+    const followedUserId = body.followedUserId + '';
     const timestamp = new Date().getTime();
     
     function updateUserFollowTable() {
