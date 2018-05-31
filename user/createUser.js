@@ -9,8 +9,8 @@ function isValidUser(user) {
 
 exports.handler = (event, context, callback) => {
     console.log(event);
-    console.log("body = ", event.body);
-    const data = JSON.parse(event.body || "{}");
+    
+    const data = JSON.parse(event || "{}");
     const timestamp = new Date().getTime();
 
     if (isValidUser(data) === false) {
@@ -49,7 +49,7 @@ exports.handler = (event, context, callback) => {
         userName: data.userName,
         userNameSearch: data.userName.toLowerCase(),
         imageUrl: 'default.jpg',
-        email: '',
+        email: data.request.userAttributes.email,
         createdAt: timestamp,
         updatedAt: timestamp,
     };
@@ -80,6 +80,7 @@ exports.handler = (event, context, callback) => {
                 isBase64Encoded: false
             }
             
+            data.response = response;
             callback(null, response);
             
             return;
@@ -100,7 +101,9 @@ exports.handler = (event, context, callback) => {
             isBase64Encoded: false
         };
     
-        callback(null, response);
+        data.response = response;
+
+        callback(null, data);
     
     });
 };
