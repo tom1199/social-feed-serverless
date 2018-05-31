@@ -138,11 +138,12 @@ Resources:
       Environment:
         Variables:
           USER_TABLE: !Ref UserTable
+          USER_FOLLOW_TABLE: !Ref FollowUserTable
       Events:
         GetEvent:
           Type: Api
           Properties:
-            Path: /users
+            Path: /users/{userId}/
             Method: get
   CreateUser:
     Type: AWS::Serverless::Function

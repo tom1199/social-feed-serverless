@@ -11,6 +11,8 @@ exports.handler = (event, context, callback) => {
     // }
 
     console.log("Event Request Authorizer => " +event.requestContext.authorizer);
+
+    const userId = event.pathParameters.userId + '';
     
     var filterExpression = "";
     var searchFilter = "";
@@ -63,22 +65,53 @@ exports.handler = (event, context, callback) => {
             return;
         }
 
-        
-        const body = {
-            message: "success",
-            users: result.Items
-        };
-        
-        const response = {
-            statusCode: 200,
-            body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            isBase64Encoded: false
-        };
-        callback(null, response);
+        var userList = [];
+        result.Items.forEach(user => {
+            console.log("User Id =>" + userId);
+            console.log("Followed User Id =>" + user.userId);
+            const paramsUser = {
+                TableName: process.env.USER_FOLLOW_TABLE,
+                FilterExpression: "userId = :userId and followedUserId = :followedUserId",
+                ExpressionAttributeValues: {
+                    ":userId": userId,
+                    ":followedUserId": user.userId
+                }
+            };
+
+            dynamodb.scan(paramsUser, (error, userResult) => {
+                if (error) {
+                    console.error(error);
+                }
+                console.log("User Result =>" + userResult.Items);
+                console.log("User Result JSON => " + JSON.stringify(userResult.Items));
+
+                if (userResult.Items.length === 1) {
+                    user.follow = true;
+                } else {
+                    user.follow = false;
+                }
+                userList.push(user);
+                
+                if(userList.length === result.Items.length){
+                    const body = {
+                        message: "success",
+                        users: userList
+                    };
+                    
+                    console.log("User Result JSON => " + JSON.stringify(userResult.Items));
+                    const response = {
+                        statusCode: 200,
+                        body: JSON.stringify(body),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*'
+                        },
+                        isBase64Encoded: false
+                    };
+                    callback(null, response);
+                }
+            });
+        });    
     });
 };
 
