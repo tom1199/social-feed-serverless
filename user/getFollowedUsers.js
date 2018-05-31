@@ -27,7 +27,7 @@ exports.handler = (event, context, callback) => {
     const userId = event.pathParameters.userId;
 
     const paramsFollwUser = {
-        TableName: process.env.FOLLOW_USER_TABLE,
+        TableName: process.env.USER_FOLLOW_TABLE,
         FilterExpression: "userId = :userId",
         ExpressionAttributeValues: {
             ":userId": userId
