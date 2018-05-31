@@ -67,7 +67,7 @@ exports.handler = (event, context, callback) => {
                 TableName: process.env.USER_TABLE,
                 FilterExpression: "userId = :userId",
                 ExpressionAttributeValues: {
-                    ":userId": followUser.userId
+                    ":userId": followUser.followedUserId
                 }
             };
 
