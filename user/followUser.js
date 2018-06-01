@@ -1,6 +1,10 @@
 
 'use strict';
 
+var aws = require('aws-sdk');
+var lambda = new aws.Lambda({
+  region: 'ap-southeast-1'
+});
 const dynamodb = require("../dynamodb");
 const resTemplate = require("../response");
 const Promise = require("promise");
@@ -89,6 +93,18 @@ exports.handler = function(event, context, callback) {
             return Promise.all([updateUserFollowTable()]);
         }
     }).then((res) => {
+        const msg = {
+            content: "Hello " + userId + ",\nUser" + followedUserId + " has started to follow you in Photo Sharing App",
+            subject: "CLING CLING! Message from Photo Sharing App"
+        };
+        var params = {
+            FunctionName: 'awscodestar-social-feed-ser-lambda-SendEmail-PTL6TY210AI2',
+            Payload: JSON.stringify(msg)
+          };
+          lambda.invoke(params, function(err, data) {
+            if (err) console.log(err, err.stack); // an error occurred
+            else     console.log("successfully send notification message to email."); // successful response
+          });
         callback(null, resTemplate.successResponse(200));
     })
     .catch((error) => {
