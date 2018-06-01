@@ -102,7 +102,7 @@ exports.handler = function(event, context, callback) {
                     reject(err);
                 } else {
                     console.log("Get User  succeeded:", JSON.stringify(data, null, 2));
-                    resolve(data);
+                    resolve(data.Item);
                 }
             });
         });
