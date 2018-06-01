@@ -1,5 +1,9 @@
 'use strict';
 
+var aws = require('aws-sdk');
+var lambda = new aws.Lambda({
+  region: 'ap-southeast-1'
+});
 const dynamodb = require("../dynamodb");
 const uuid = require("uuid");
 
@@ -106,6 +110,15 @@ exports.handler = (event, context, callback) => {
         event.response = response;
         console.log(event);
         console.log("After Response");
+
+        // var params = {
+        //     FunctionName: 'sendNotiEmail',
+        //     Payload: JSON.stringify(event)
+        //   };
+        //   lambda.invoke(params, function(err, data) {
+        //     if (err) console.log(err, err.stack); // an error occurred
+        //     else     console.log("successfully register email.");   // successful response
+        //   });
 
         callback(null, event);
     
