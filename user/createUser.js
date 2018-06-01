@@ -39,16 +39,6 @@ exports.handler = (event, context, callback) => {
         return;
     }
 
-    // const newUser = {
-    //     userId: uuid.v1(),
-    //     userName: data.userName,
-    //     userNameSearch: data.userName.toLowerCase(),
-    //     imageUrl: 'default.jpg',
-    //     email: data.email,
-    //     createdAt: timestamp,
-    //     updatedAt: timestamp,
-    // };
-
     const newUser = {
         userId: event.userName,
         userName: event.userName,
@@ -110,17 +100,7 @@ exports.handler = (event, context, callback) => {
         console.log(event);
         console.log("After Response");
 
-        // var params = {
-        //     FunctionName: 'awscodestar-social-feed-ser-CreateEmailSubscriber-19A93LXXT4QI0',
-        //     Payload: JSON.stringify(newUser)
-        //   };
-        //   lambda.invoke(params, function(err, data) {
-        //     if (err) console.log(err, err.stack); // an error occurred
-        //     else     console.log("successfully register email.");   // successful response
-        //   });
-
-        callback(null, event);
-    
+        callback(null, event);    
     });
 };
 
