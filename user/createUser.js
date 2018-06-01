@@ -85,7 +85,7 @@ exports.handler = (event, context, callback) => {
                 isBase64Encoded: false
             }
             console.log("error");
-            event.response = response;
+            
             callback(null, response);
             
             return;
