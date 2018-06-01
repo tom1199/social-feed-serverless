@@ -234,7 +234,6 @@ Resources:
               Path: /users/{userId}/followUser
               Method: GET
 
-
 #Util Services            
   CreateEmailSubscriber:
     Type: AWS::Serverless::Function
@@ -245,14 +244,14 @@ Resources:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
   
-  # SendEmail:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Handler: utils/sendEmail.handler
-  #     Runtime: nodejs6.10
-  #     Role:
-  #       Fn::ImportValue:
-  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  SendEmail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: utils/sendEmail.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
 
   # SendSMS:
   #   Type: AWS::Serverless::Function
