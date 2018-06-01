@@ -236,14 +236,14 @@ Resources:
 
 
 #Util Services            
-  # CreateEmailSubscriber:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Handler: utils/createEmailSubscriber.handler
-  #     Runtime: nodejs6.10
-  #     Role:
-  #       Fn::ImportValue:
-  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  CreateEmailSubscriber:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: utils/createEmailSubscriber.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
   
   # SendEmail:
   #   Type: AWS::Serverless::Function
