@@ -86,6 +86,27 @@ exports.handler = function(event, context, callback) {
             });
         });
     }
+
+    function getUser(uId) {
+        return new Promise((resolve, reject) => {
+            var params = {
+                TableName: process.env.USER_TABLE,
+                Key:{
+                    "userId": uId
+                }
+            };
+            
+            dynamodb.get(params, function(err, data) {
+                if (err) {
+                    console.error("Unable to get user. Error JSON:", JSON.stringify(err, null, 2));
+                    reject(err);
+                } else {
+                    console.log("GetItem succeeded:", JSON.stringify(data, null, 2));
+                    resolve(data);
+                }
+            });
+        });
+    }
     
     isFollowUser().then((exist) => {
         console.log("User already followed = " + exist);

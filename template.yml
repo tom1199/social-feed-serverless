@@ -190,6 +190,7 @@ Resources:
       Environment:
         Variables:
           USER_FOLLOW_TABLE: !Ref FollowUserTable
+          USER_TABLE: !Ref UserTable
       Events:
         GetEvent:
           Type: Api

@@ -53,7 +53,7 @@ exports.handler = (event, context, callback) => {
         userId: event.userName,
         userName: event.userName,
         userNameSearch: event.userName.toLowerCase(),
-        imageUrl: 'https://res.cloudinary.com/demo/image/upload/w_100,h_100,c_thumb,g_face,r_20,d_avatar.png/non_existing_id.png',
+        imageUrl: 'profile/default.jpeg',
         email: event.request.userAttributes.email,
         createdAt: timestamp,
         updatedAt: timestamp
