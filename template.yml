@@ -253,6 +253,15 @@ Resources:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
 
+  SendSES:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: utils/sendSES.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]          
+
   # SendSMS:
   #   Type: AWS::Serverless::Function
   #   Properties:
