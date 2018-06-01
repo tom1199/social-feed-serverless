@@ -115,8 +115,9 @@ exports.handler = function(event, context, callback) {
         }
     }).then((res) => {
         const msg = {
-            content: "Hello " + userId + ",\nUser" + followedUserId + " has started to follow you in Photo Sharing App",
-            subject: "CLING CLING! Message from Photo Sharing App"
+            content: "Hello " + userId + ",\nUser " + followedUserId + " has started to follow you in Photo Sharing App",
+            subject: "CLING CLING! Message from Photo Sharing App",
+            email: "trezabawmwin@gmail.com"
         };
         var params = {
             FunctionName: 'awscodestar-social-feed-ser-lambda-SendEmail-PTL6TY210AI2',
@@ -124,7 +125,7 @@ exports.handler = function(event, context, callback) {
           };
           lambda.invoke(params, function(err, data) {
             if (err) console.log(err, err.stack); // an error occurred
-            else     console.log("successfully send notification message to email."); // successful response
+            else     console.log("successfully register email."); // successful response
           });
         callback(null, resTemplate.successResponse(200));
     })
