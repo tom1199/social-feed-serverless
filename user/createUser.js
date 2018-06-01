@@ -107,7 +107,6 @@ exports.handler = (event, context, callback) => {
             isBase64Encoded: false
         };
     
-        event.response = response;
         console.log(event);
         console.log("After Response");
 
