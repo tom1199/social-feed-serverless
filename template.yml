@@ -177,8 +177,8 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-            Path: /users
-            Method: PUT
+            Path: /users/updateUser
+            Method: POST
   FollowUser:
     Type: AWS::Serverless::Function
     Properties:
