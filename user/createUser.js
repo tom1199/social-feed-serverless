@@ -110,15 +110,6 @@ exports.handler = (event, context, callback) => {
         console.log(event);
         console.log("After Response");
 
-        // var params = {
-        //     FunctionName: 'awscodestar-social-feed-ser-CreateEmailSubscriber-19A93LXXT4QI0',
-        //     Payload: JSON.stringify(newUser)
-        //   };
-        //   lambda.invoke(params, function(err, data) {
-        //     if (err) console.log(err, err.stack); // an error occurred
-        //     else     console.log("successfully register email.");   // successful response
-        //   });
-
         callback(null, event);
     
     });

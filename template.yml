@@ -244,14 +244,14 @@ Resources:
   #       Fn::ImportValue:
   #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
   
-  SendEmail:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: utils/sendEmail.handler
-      Runtime: nodejs6.10
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  # SendEmail:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: utils/sendEmail.handler
+  #     Runtime: nodejs6.10
+  #     Role:
+  #       Fn::ImportValue:
+  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
 
   SendSES:
     Type: AWS::Serverless::Function
@@ -271,26 +271,26 @@ Resources:
   #       Fn::ImportValue:
   #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
 
-  # CreateThumbnail:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Handler: utils/createThumbnail.handler
-  #     Runtime: nodejs6.10
-  #     Role:
-  #       Fn::ImportValue:
-  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-  #     Timeout: 60
-  #     Events:
-  #       S3FileListener:
-  #         Type: S3
-  #         Properties:
-  #           Bucket: !Ref S3BucketPhotos
-  #           Events: s3:ObjectCreated:*
-  #           Filter:
-  #             S3Key:
-  #               Rules:
-  #                 - Name: prefix
-  #                   Value: '/public/feeds'   
+  CreateThumbnail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: utils/createThumbnail.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Timeout: 60
+      Events:
+        S3FileListener:
+          Type: S3
+          Properties:
+            Bucket: !Ref S3BucketPhotos
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: '/public/feeds'   
 
   # DynamoDB Feed Table
   FeedTable:
