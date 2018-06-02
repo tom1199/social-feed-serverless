@@ -42,9 +42,10 @@ exports.handler = (event, context, callback) => {
         Key: {
             "userId": userId
         },
-        UpdateExpression: "set imageUrl = :imageUrl",
+        UpdateExpression: "set imageUrl = :imageUrl, updatedAt = :updatedAt",
         ExpressionAttributeValues: {
-            ":imageUrl": imageUrl
+            ":imageUrl": imageUrl,
+            ":updatedAt": timestamp
         },
         ReturnValues:"UPDATED_NEW"
     };

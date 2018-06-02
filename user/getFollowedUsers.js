@@ -58,7 +58,27 @@ exports.handler = (event, context, callback) => {
 
         var followUserList = [];
 
-        console.log("Follow User List => " + result.Items)
+        console.log("Follow User List => " + result.Items);
+
+        if (result.Items.length === 0) {
+            console.log("There is no follow user for this userId => " + userId);
+
+            const body = {
+                message: "success",
+                users: followUserList
+            };
+            
+            const response = {
+                statusCode: 200,
+                body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                isBase64Encoded: false
+            };
+            callback(null, response);
+        }
 
         result.Items.forEach(followUser => {
             console.log("User Id =>" + followUser.userId);
@@ -77,7 +97,9 @@ exports.handler = (event, context, callback) => {
                 }
                 console.log("User Result =>" + userResult.Items);
                 console.log("User Result JSON => " + JSON.stringify(userResult.Items));
-                followUserList.push(userResult.Items[0]);
+                var user = userResult.Items[0];
+                user.follow = true;
+                followUserList.push(user);
                 if(followUserList.length === result.Items.length){
                     const body = {
                         message: "success",

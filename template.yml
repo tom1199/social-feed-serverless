@@ -139,11 +139,12 @@ Resources:
       Environment:
         Variables:
           USER_TABLE: !Ref UserTable
+          USER_FOLLOW_TABLE: !Ref FollowUserTable
       Events:
         GetEvent:
           Type: Api
           Properties:
-            Path: /users
+            Path: /users/{userId}/search
             Method: get
   CreateUser:
     Type: AWS::Serverless::Function
@@ -177,8 +178,8 @@ Resources:
         GetEvent:
           Type: Api
           Properties:
-            Path: /users
-            Method: PUT
+            Path: /users/updateUser
+            Method: POST
   FollowUser:
     Type: AWS::Serverless::Function
     Properties:
@@ -190,6 +191,7 @@ Resources:
       Environment:
         Variables:
           USER_FOLLOW_TABLE: !Ref FollowUserTable
+          USER_TABLE: !Ref UserTable
       Events:
         GetEvent:
           Type: Api
@@ -234,7 +236,6 @@ Resources:
               Path: /users/{userId}/followUser
               Method: GET
 
-
 #Util Services            
   # CreateEmailSubscriber:
   #   Type: AWS::Serverless::Function
@@ -253,6 +254,15 @@ Resources:
   #     Role:
   #       Fn::ImportValue:
   #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+
+  SendSES:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: utils/sendSES.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]          
 
   # SendSMS:
   #   Type: AWS::Serverless::Function
