@@ -86,6 +86,27 @@ exports.handler = function(event, context, callback) {
             });
         });
     }
+
+    function getUser(uId) {
+        return new Promise((resolve, reject) => {
+            var params = {
+                TableName: process.env.USER_TABLE,
+                Key:{
+                    "userId": uId
+                }
+            };
+            
+            dynamodb.get(params, function(err, data) {
+                if (err) {
+                    console.error("Unable to get user. Error JSON:", JSON.stringify(err, null, 2));
+                    reject(err);
+                } else {
+                    console.log("Get User  succeeded:", JSON.stringify(data, null, 2));
+                    resolve(data.Item);
+                }
+            });
+        });
+    }
     
     isFollowUser().then((exist) => {
         console.log("User already followed = " + exist);
@@ -93,19 +114,24 @@ exports.handler = function(event, context, callback) {
             return Promise.all([updateUserFollowTable()]);
         }
     }).then((res) => {
-        const msg = {
-            content: "Hello " + userId + ",\nUser " + followedUserId + " has started to follow you in Photo Sharing App",
-            subject: "CLING CLING! Message from Photo Sharing App",
-            email: "trezabawmwin@gmail.com"
-        };
-        var params = {
-            FunctionName: 'awscodestar-social-feed-ser-lambda-SendEmail-PTL6TY210AI2',
-            Payload: JSON.stringify(msg)
-          };
-          lambda.invoke(params, function(err, data) {
-            if (err) console.log(err, err.stack); // an error occurred
-            else     console.log("successfully register email."); // successful response
-          });
+        getUser(followedUserId).then((followUser) => {
+            var followeremail = followUser.email;
+            console.log("Follow User Email " + followeremail)
+            const msg = {
+                content: "Hello " + followedUserId + ",\nUser " + userId + " has started to follow you in Photo Sharing App",
+                subject: "CLING CLING! Message from Photo Sharing App",
+                email: followeremail
+            };
+            var params = {
+                FunctionName: 'awscodestar-social-feed-ser-lambda-SendSES-EI4FFKRECN5V',
+                Payload: JSON.stringify(msg)
+              };
+              lambda.invoke(params, function(err, data) {
+                if (err) console.log(err, err.stack); // an error occurred
+                else     console.log("successfully send email."); // successful response
+              });
+        });
+        
         callback(null, resTemplate.successResponse(200));
     })
     .catch((error) => {

@@ -39,21 +39,11 @@ exports.handler = (event, context, callback) => {
         return;
     }
 
-    // const newUser = {
-    //     userId: uuid.v1(),
-    //     userName: data.userName,
-    //     userNameSearch: data.userName.toLowerCase(),
-    //     imageUrl: 'default.jpg',
-    //     email: data.email,
-    //     createdAt: timestamp,
-    //     updatedAt: timestamp,
-    // };
-
     const newUser = {
         userId: event.userName,
         userName: event.userName,
         userNameSearch: event.userName.toLowerCase(),
-        imageUrl: 'https://res.cloudinary.com/demo/image/upload/w_100,h_100,c_thumb,g_face,r_20,d_avatar.png/non_existing_id.png',
+        imageUrl: 'profile/default.jpeg',
         email: event.request.userAttributes.email,
         createdAt: timestamp,
         updatedAt: timestamp
@@ -110,8 +100,8 @@ exports.handler = (event, context, callback) => {
         console.log(event);
         console.log("After Response");
 
-        callback(null, event);
-    
+        callback(null, event);    
+
     });
 };
 
