@@ -131,7 +131,7 @@ exports.handler = function(event, context, callback) {
     
     Promise.all([getFollowingFeeds(userId), getLikedFeeds(userId)])
     .then((values) =>{
-        const followingFeeds = values[0];
+        var followingFeeds = values[0];
         const likedFeedIds = values[1];
         console.log("my following feeds = " + JSON.stringify(followingFeeds))
         console.log("i liked feeds = " + JSON.stringify(likedFeedIds));
@@ -141,14 +141,16 @@ exports.handler = function(event, context, callback) {
             return
         }
         
+        followingFeeds = followingFeeds.map((feed) => { 
+            feed.iLike = false
+            return feed
+        });
+        
         if (likedFeedIds.length == 0) {
-            callback(null, resTemplate.successResponse(200, {feeds: followingFeeds.map((feed) => { 
-                feed.iLike = false
-                return feed
-            })}));
+            callback(null, resTemplate.successResponse(200, {feeds: followingFeeds}));
         }
         
-        const modFollowingFeeds = followingFeeds.map((feed) => {
+        followingFeeds = followingFeeds.map((feed) => {
             
             if (likedFeedIds.indexOf(feed.id) > -1) {
                 console.log("found feed i liked before");
@@ -157,7 +159,8 @@ exports.handler = function(event, context, callback) {
             }
             return feed
         })
-        callback(null, resTemplate.successResponse(200, {feeds: modFollowingFeeds}));
+        
+        callback(null, resTemplate.successResponse(200, {feeds: followingFeeds}));
     }).catch((error) => {
         callback(null, resTemplate.errorResponse(500, "Internal Server Error"));
     })
