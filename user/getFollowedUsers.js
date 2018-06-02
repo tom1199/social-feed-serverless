@@ -58,7 +58,27 @@ exports.handler = (event, context, callback) => {
 
         var followUserList = [];
 
-        console.log("Follow User List => " + result.Items)
+        console.log("Follow User List => " + result.Items);
+
+        if (result.Items.length === 0) {
+            console.log("There is no follow user for this userId => " + userId);
+
+            const body = {
+                message: "success",
+                users: followUserList
+            };
+            
+            const response = {
+                statusCode: 200,
+                body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                isBase64Encoded: false
+            };
+            callback(null, response);
+        }
 
         result.Items.forEach(followUser => {
             console.log("User Id =>" + followUser.userId);
