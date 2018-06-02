@@ -81,7 +81,6 @@ Resources:
         Variables:
           FEED_TABLE: !Ref FeedTable
           USER_FOLLOW_TABLE: !Ref FollowUserTable
-          USER_LIKE_FEED_TABLE: !Ref UserLikeFeedTable
       Events:
         GetEvent:
           Type: Api
@@ -191,7 +190,6 @@ Resources:
       Environment:
         Variables:
           USER_FOLLOW_TABLE: !Ref FollowUserTable
-          USER_TABLE: !Ref UserTable
       Events:
         GetEvent:
           Type: Api
@@ -282,17 +280,17 @@ Resources:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Timeout: 60
-      Events:
-        S3FileListener:
-          Type: S3
-          Properties:
-            Bucket: !Ref social-app-image-upload
-            Events: s3:ObjectCreated:*
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: 'public/feeds/'   
+      # Events:
+      #   S3FileListener:
+      #     Type: S3
+      #     Properties:
+      #       Bucket: !Ref S3BucketPhotos
+      #       Events: s3:ObjectCreated:*
+      #       Filter:
+      #         S3Key:
+      #           Rules:
+      #             - Name: prefix
+      #               Value: 'public/feeds/'
 
   # DynamoDB Feed Table
   FeedTable:
