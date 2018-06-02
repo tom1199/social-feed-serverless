@@ -20,7 +20,7 @@ exports.handler = (event, context, callback) => {
     if (event.queryStringParameters.searchFilter !== undefined &&
         event.queryStringParameters.searchFilter !== "") {
         searchFilter = event.queryStringParameters.searchFilter;
-        filterExpression = "contains(userName, :searchFilter) or contains(email, :searchFilter)";
+        filterExpression = "contains(userName, :searchFilter) or contains(email, :searchFilter) or contains(userNameSearch, :searchFilter)";
         // filterExpression = "contains(userName, :searchFilter)"; 
     }
 
@@ -66,6 +66,27 @@ exports.handler = (event, context, callback) => {
         }
 
         var userList = [];
+    
+        if (result.Items.length === 0) {
+            console.log("No User for this search String => " + searchFilter);
+            const body = {
+                message: "success",
+                users: userList
+            };
+            
+            const response = {
+                statusCode: 200,
+                body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                isBase64Encoded: false
+            };
+            callback(null, response);
+        }
+
+        console.log("No User for this search String => " + searchFilter);
         result.Items.forEach(user => {
             console.log("User Id =>" + userId);
             console.log("Followed User Id =>" + user.userId);
