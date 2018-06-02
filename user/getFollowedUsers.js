@@ -97,7 +97,9 @@ exports.handler = (event, context, callback) => {
                 }
                 console.log("User Result =>" + userResult.Items);
                 console.log("User Result JSON => " + JSON.stringify(userResult.Items));
-                followUserList.push(userResult.Items[0]);
+                var user = userResult.Items[0];
+                user.follow = true;
+                followUserList.push(user);
                 if(followUserList.length === result.Items.length){
                     const body = {
                         message: "success",
