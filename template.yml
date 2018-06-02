@@ -81,6 +81,7 @@ Resources:
         Variables:
           FEED_TABLE: !Ref FeedTable
           USER_FOLLOW_TABLE: !Ref FollowUserTable
+          USER_LIKE_FEED_TABLE: !Ref UserLikeFeedTable
       Events:
         GetEvent:
           Type: Api
