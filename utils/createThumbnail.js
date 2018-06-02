@@ -4,7 +4,7 @@ var gm = require("gm").subClass({imageMagick: true});
 var fs = require("fs");
 var mktemp = require("mktemp");
 
-var THUMB_KEY_PREFIX = "/public/feeds/thumbnails/",
+var THUMB_KEY_PREFIX = "profile/thumbnails/",
     THUMB_WIDTH = 100,
     THUMB_HEIGHT = 100,
     ALLOWED_FILETYPES = ['png', 'jpg', 'jpeg', 'bmp', 'tiff', 'pdf', 'gif'];
