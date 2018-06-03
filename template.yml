@@ -253,6 +253,15 @@ Resources:
   #       Fn::ImportValue:
   #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
 
+  RekognitionFaceDetection:
+  Type: AWS::Serverless::Function
+  Properties:
+    Handler: utils/rekognitionFaceDetection.handler
+    Runtime: nodejs6.10
+    Role:
+      Fn::ImportValue:
+        !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]   
+        
   SendSES:
     Type: AWS::Serverless::Function
     Properties:
@@ -271,15 +280,15 @@ Resources:
   #       Fn::ImportValue:
   #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
 
-  CreateThumbnail:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: utils/createThumbnail.handler
-      Runtime: nodejs6.10
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Timeout: 60
+  # CreateThumbnail:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: utils/createThumbnail.handler
+  #     Runtime: nodejs6.10
+  #     Role:
+  #       Fn::ImportValue:
+  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  #     Timeout: 60
       # Events:
       #   S3FileListener:
       #     Type: S3
