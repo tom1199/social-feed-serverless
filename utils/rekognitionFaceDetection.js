@@ -74,7 +74,7 @@ function processRekognition(bucket, sourceKey, targetKey) {
       email: "trezabawmwin@gmail.com" // TODO : change to face detected profile picture's owner email
       };
       var params = {
-        FunctionName: 'sendSES',
+        FunctionName: 'awscodestar-social-feed-ser-lambda-SendSES-EI4FFKRECN5V',
         Payload: JSON.stringify(msg)
       };
       console.log("Going to alert! ");
