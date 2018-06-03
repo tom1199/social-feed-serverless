@@ -69,9 +69,9 @@ function processRekognition(bucket, sourceKey, targetKey) {
      console.log("Hoyayyy face match!!" + data.FaceMatches.length);
      
       const msg = {
-      content: "Alert alert",
-      subject: "Psss! The picture uploaded by someone. It might be you in that photo!!!",
-      email: "trezabawmwin@gmail.com" // TODO : change to face detected profile picture's owner email
+        subject: "Alert from Social app",
+        content: "Psss! The picture uploaded by someone. It might be you in that photo!!!",
+        email: "trezabawmwin@gmail.com" // TODO : change to face detected profile picture's owner email
       };
       var params = {
         FunctionName: 'awscodestar-social-feed-ser-lambda-SendSES-EI4FFKRECN5V',
