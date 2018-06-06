@@ -371,7 +371,7 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
+        StreamViewType: NEW_IMAGE
 
   # DynamoDB User Table
   UserTable:
@@ -387,7 +387,7 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
+        StreamViewType: NEW_IMAGE
 
   # DynamoDB Like Table
   UserLikeFeedTable:
@@ -407,7 +407,7 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
+        StreamViewType: NEW_IMAGE
   FeedLikedByUserTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -425,7 +425,7 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
+        StreamViewType: NEW_IMAGE
   FollowUserTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -443,7 +443,7 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
+        StreamViewType: NEW_IMAGE
   # UserSignupReportTable:
   #   Type: AWS::DynamoDB::Table
   #   Properties:
@@ -457,7 +457,7 @@ Resources:
   #       ReadCapacityUnits: 5
   #       WriteCapacityUnits: 5
   #     StreamSpecification:
-  #       StreamViewType: NEW_AND_OLD_IMAGES
+  #       StreamViewType: NEW_IMAGE
   
   S3BucketPhotos:
       Type: AWS::S3::Bucket
