@@ -283,23 +283,23 @@ Resources:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]          
   
-  IncrementUserSignupCount:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: utils/incrementNewSignup.handler
-      Runtime: nodejs6.10
-      Role:
-        Fn::ImportValue
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Environment:
-        Variables:
-          USER_SIGNUP_REPORT_TABLE: !Ref UserSignupReportTable
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /reports
-            Method: GET
+  # IncrementUserSignupCount:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: utils/incrementNewSignup.handler
+  #     Runtime: nodejs6.10
+  #     Role:
+  #       Fn::ImportValue
+  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  #     Environment:
+  #       Variables:
+  #         USER_SIGNUP_REPORT_TABLE: !Ref UserSignupReportTable
+  #     Events:
+  #       NewSignup:
+  #         Type: DynamoDB
+  #         Properties:
+  #           Stream: !Ref UserTable
+  #           StartingPosition: TRIM_HORIZON
             
   # CreateReports:
   #   Type: AWS::Serverless::Function
