@@ -289,20 +289,20 @@ Resources:
       Handler: utils/incrementNewSignup.handler
       Runtime: nodejs6.10
       Role:
-        Fn::ImportValue
+        Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
       Environment:
         Variables:
           USER_SIGNUP_REPORT_TABLE: !Ref UserSignupReportTable
-      Events:
-        UserTableStream:
-          Type: DynamoDB
-          Properties:
-            Stream: 
-              Fn::GetAtt
-                - UserTable
-                - StreamArn
-            StartingPosition: TRIM_HORIZON
+      # Events:
+      #   UserTableStream:
+      #     Type: DynamoDB
+      #     Properties:
+      #       Stream: 
+      #         Fn::GetAtt
+      #           - UserTable
+      #           - StreamArn
+      #       StartingPosition: TRIM_HORIZON
             
   # CreateReports:
   #   Type: AWS::Serverless::Function
