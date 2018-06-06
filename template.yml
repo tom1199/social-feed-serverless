@@ -282,7 +282,44 @@ Resources:
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]          
-
+  
+  IncrementUserSignupCount:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: utils/incrementNewSignup.handler
+      Runtime: nodejs6.10
+      Role:
+        Fn::ImportValue
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          USER_SIGNUP_REPORT_TABLE: !Ref UserSignupReportTable
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /reports
+            Method: GET
+            
+  # CreateReports:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: utils/createAnalysisReport.handler
+  #     Runtime: nodejs6.10
+  #     Role:
+  #       Fn::ImportValue
+  #         !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+  #     Environment:
+  #       Variables:
+  #         USER_TABLE: !Ref UserTable
+  #         FEED_TABLE: !Ref FeedTable
+  #     Events:
+  #       GetEvent:
+  #         Type: Api
+  #         Properties:
+  #           Path: /reports
+  #           Method: GET
+            
   # SendSMS:
   #   Type: AWS::Serverless::Function
   #   Properties:
@@ -331,7 +368,7 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_IMAGE
+        StreamViewType: NEW_AND_OLD_IMAGES
 
   # DynamoDB User Table
   UserTable:
@@ -347,7 +384,7 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_IMAGE
+        StreamViewType: NEW_AND_OLD_IMAGES
   
   # DynamoDB Like Table
   UserLikeFeedTable:
@@ -367,7 +404,7 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_IMAGE
+        StreamViewType: NEW_AND_OLD_IMAGES
   FeedLikedByUserTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -385,7 +422,7 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_IMAGE
+        StreamViewType: NEW_AND_OLD_IMAGES
   FollowUserTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -403,7 +440,22 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamViewType: NEW_IMAGE
+        StreamViewType: NEW_AND_OLD_IMAGES
+  UserSignupReportTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: date
+          AttributeType: S
+      KeySchema:
+        - AttributeName: date
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamEnabled: True
+        StreamViewType: NEW_AND_OLD_IMAGES
   
   S3BucketPhotos:
       Type: AWS::S3::Bucket
