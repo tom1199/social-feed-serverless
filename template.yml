@@ -457,7 +457,6 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
       StreamSpecification:
-        StreamEnabled: True
         StreamViewType: NEW_AND_OLD_IMAGES
   
   S3BucketPhotos:
