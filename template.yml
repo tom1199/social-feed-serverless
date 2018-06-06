@@ -291,9 +291,9 @@ Resources:
       Role:
         Fn::ImportValue
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
-      Environment:
-        Variables:
-          USER_SIGNUP_REPORT_TABLE: !Ref UserSignupReportTable
+      # Environment:
+      #   Variables:
+      #     USER_SIGNUP_REPORT_TABLE: !Ref UserSignupReportTable
       Events:
         NewSignup:
           Type: DynamoDB
